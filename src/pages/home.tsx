@@ -4,13 +4,22 @@ import { useState } from "react";
 import Footer from "~/components/Footer";
 import MainReviews from "~/components/MainReviews";
 import MainServices from "~/components/MainServices";
+import ConsultRequestModal from "~/components/ConsultRequestModal";
 
 const Home = () => {
   const [topbar, setTopbar] = useState<boolean>(true);
   const [showMore, setShowMore] = useState<boolean>(false);
+  const [consultRequestModal, setConsultRequestModal] =
+    useState<boolean>(false);
 
   return (
     <div className="mx-auto max-w-md">
+      {consultRequestModal && (
+        <ConsultRequestModal
+          open={consultRequestModal}
+          setOpen={setConsultRequestModal}
+        />
+      )}
       {topbar && (
         <div className="relative flex h-8 flex-row items-center justify-center bg-purple-500 text-sm text-white">
           <span>96명 등록 완료</span>
@@ -83,7 +92,10 @@ const Home = () => {
           </div>
         )}
         <div className="mt-7 flex space-x-3">
-          <div className="flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-2xl border border-solid border-purple-700 text-sm text-purple-700">
+          <div
+            className="flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-2xl border border-solid border-purple-700 text-sm text-purple-700"
+            onClick={() => setConsultRequestModal(true)}
+          >
             상담하기
           </div>
           <div className="flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-2xl bg-purple-700 text-sm text-white">
