@@ -38,19 +38,27 @@ export default function NewCustomerModal({
               <Dialog.Panel className="relative h-full w-full max-w-md transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:max-w-[400px]">
                 <div className="text-sm">
                   <div className="mb-2 text-base font-bold">고객 등록</div>
+
                   <div className="flex flex-row space-x-3">
                     <input
                       type="text"
                       className="rounded-md border border-solid border-gray-400 px-2 py-1"
                       placeholder="이름"
+                      tabIndex={-1}
                     />
-                    <select className="rounded-md border border-solid border-gray-400 px-2 py-1">
+                    <select
+                      className="rounded-md border border-solid border-gray-400 px-2 py-1"
+                      tabIndex={-1}
+                    >
                       <option>남</option>
                       <option>여</option>
                     </select>
                   </div>
                   <p className="my-2">방문경로</p>
-                  <select className="rounded-md border border-solid border-gray-400 px-2 py-1">
+                  <select
+                    className="rounded-md border border-solid border-gray-400 px-2 py-1"
+                    tabIndex={-1}
+                  >
                     <option>네이버</option>
                     <option>인스타그램</option>
                     <option>지인소개</option>
@@ -64,6 +72,7 @@ export default function NewCustomerModal({
                     minRows={4}
                     className="mt-3 w-full resize-none border border-solid border-gray-300 px-2 py-2"
                     placeholder="추후 세부적으로 보강"
+                    tabIndex={-1}
                   />
                 </div>
 

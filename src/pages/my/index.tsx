@@ -104,7 +104,11 @@ const MyPage = () => {
               </div>
             </>
           ) : (
-            <div className="mb-16">
+            <div className="mb-16 flex flex-col space-y-3">
+              <SearchCard />
+              <SearchCard />
+
+              <SearchCard />
               <SearchCard />
             </div>
           )}
