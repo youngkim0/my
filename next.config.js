@@ -17,6 +17,16 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "fastly.picsum.photos",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 export default config;
