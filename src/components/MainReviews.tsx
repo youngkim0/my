@@ -5,7 +5,7 @@ const MainReviews = () => {
   return (
     <Carousel
       additionalTransfrom={0}
-      arrows
+      arrows={false}
       autoPlaySpeed={3000}
       centerMode={false}
       className=""
@@ -29,7 +29,7 @@ const MainReviews = () => {
             min: 1024,
           },
           items: 1,
-          partialVisibilityGutter: 0,
+          partialVisibilityGutter: 100,
         },
         mobile: {
           breakpoint: {
@@ -37,7 +37,31 @@ const MainReviews = () => {
             min: 0,
           },
           items: 1,
-          partialVisibilityGutter: 0,
+          partialVisibilityGutter: 50,
+        },
+        galaxyS8: {
+          breakpoint: {
+            max: 360,
+            min: 0,
+          },
+          items: 1,
+          partialVisibilityGutter: 2,
+        },
+        iPhoneSE: {
+          breakpoint: {
+            max: 375,
+            min: 0,
+          },
+          items: 1,
+          partialVisibilityGutter: 5,
+        },
+        iPhonePro: {
+          breakpoint: {
+            max: 391,
+            min: 0,
+          },
+          items: 1,
+          partialVisibilityGutter: 20,
         },
         tablet: {
           breakpoint: {
@@ -45,7 +69,7 @@ const MainReviews = () => {
             min: 464,
           },
           items: 1,
-          partialVisibilityGutter: 0,
+          partialVisibilityGutter: 80,
         },
       }}
       rewind={false}
@@ -53,6 +77,7 @@ const MainReviews = () => {
       rtl={false}
       shouldResetAutoplay
       showDots={false}
+      removeArrowOnDeviceType={["tablet", "mobile"]}
       sliderClass=""
       slidesToSlide={1}
       swipeable

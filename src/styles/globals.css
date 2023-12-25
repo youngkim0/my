@@ -1,3 +1,71 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* add pretendard font to tailwind */
+/* FONT */
+@font-face {
+  font-family: pretendard;
+  src: url(/font/Pretendard-Thin.otf) format("woff");
+  font-weight: 200;
+}
+@font-face {
+  font-family: pretendard;
+  src: url(/font/Pretendard-Light.otf) format("woff");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: pretendard;
+  src: url(/font/Pretendard-Regular.otf) format("woff");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: pretendard;
+  src: url(/font/Pretendard-Bold.otf) format("woff");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: pretendard;
+  src: url(/font/Pretendard-ExtraBold.otf) format("woff");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: batang;
+  src: url(/font/BareunBatangOTFPro-1.otf) format("woff");
+  font-weight: light;
+}
+@font-face {
+  font-family: batang;
+  src: url(/font/BareunBatangOTFPro-2.otf) format("woff");
+  font-weight: normal;
+}
+@font-face {
+  font-family: batang;
+  src: url(/font/BareunBatangOTFPro-3.otf) format("woff");
+  font-weight: bold;
+}
+@font-face {
+  font-family: dotum;
+  src: url(/font/BareunDotumOTFPro1.otf) format("woff");
+  font-weight: light;
+}
+@font-face {
+  font-family: dotum;
+  src: url(/font/BareunDotumOTFPro2.otf) format("woff");
+  font-weight: normal;
+}
+@font-face {
+  font-family: dotum;
+  src: url(/font/BareunDotumOTFPro3.otf) format("woff");
+  font-weight: bold;
+}
+
+body {
+  font-family: "pretendard";
+ background-color: #F4F4F4;
+}

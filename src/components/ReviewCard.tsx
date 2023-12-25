@@ -8,19 +8,20 @@ const ReviewCard = () => {
     <>
       {showDetail && <ReviewModal open={showDetail} setOpen={setShowDetail} />}
       <div
-        className="flex h-[100px] w-full cursor-pointer  flex-row border border-solid border-gray-100 shadow-xl"
+        className="flex h-[96px] w-[300px] cursor-pointer flex-row rounded-2xl border border-solid border-gray-100 bg-white"
         onClick={() => setShowDetail(true)}
       >
-        <div className="relative h-[100px] w-[100px] rounded-full">
+        <div className="relative h-[96px] w-[101px]">
           <Image
             src="/images/sample_hair.png"
             alt="review"
             fill
             quality={100}
+            className=" rounded-l-2xl"
           />
         </div>
-        <div className="line-clamp-4 h-[90px] flex-1 px-2 leading-6 text-black">
-          <div className="py-2 text-sm">
+        <div className="my-2 line-clamp-4 h-[70px] flex-1 px-2 leading-6 text-black">
+          <div className="py-2 text-xs">
             이 미용실은 정말로 최고예요! 전문적이고 친절한 스태프들이 항상
             웃음으로 맞이해줍니다. 최신 트렌드에 맞춘 스타일링에 정말 만족했고,
             특히 손님을 위한 세심한 배려가 눈에 띕니다. 깨끗하고 아늑한 분위기도
