@@ -24,7 +24,8 @@ model User {
     joinedAt      DateTime  @default(now())
     updatedAt     DateTime? @updatedAt
     expiresAt     DateTime?
-
+    name       String
+    store      String
     Account Account[]
     Session Session[]
 }
@@ -75,3 +76,4 @@ model Clients {
     lastConsult String?
 
 }
+
