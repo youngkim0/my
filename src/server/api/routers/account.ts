@@ -15,6 +15,7 @@ export const accountRouter = createTRPCRouter({
           joinedAt: new Date(),
           name: "",
           store: "",
+          nickname: "",
         },
       });
       return true;
@@ -30,7 +31,48 @@ export const accountRouter = createTRPCRouter({
       return user ? true : false;
     }),
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
+  getAccount: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: {
+          kakaoID: input.id,
+        },
+      });
+      return user;
+    }),
+  getAccountByNickname: publicProcedure
+    .input(z.object({ nickname: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findMany({
+        where: {
+          nickname: input.nickname,
+        },
+      });
+      return user ? user[0] : null;
+    }),
+  updateAccount: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        store: z.string(),
+        image: z.string(),
+        nickname: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.update({
+        where: {
+          kakaoID: input.id,
+        },
+        data: {
+          name: input.name,
+          store: input.store,
+          image: input.image,
+          nickname: input.nickname,
+        },
+      });
+      return user;
+    }),
 });

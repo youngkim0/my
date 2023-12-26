@@ -5,12 +5,26 @@ import Footer from "~/components/Footer";
 import MainReviews from "~/components/MainReviews";
 import MainServices from "~/components/MainServices";
 import ConsultRequestModal from "~/components/ConsultRequestModal";
+import { useRouter } from "next/router";
+import { api } from "~/utils/api";
 
 const Home = () => {
   const [topbar, setTopbar] = useState<boolean>(true);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [consultRequestModal, setConsultRequestModal] =
     useState<boolean>(false);
+  const router = useRouter();
+
+  const userInfo = api.account.getAccountByNickname.useQuery(
+    {
+      nickname: router.query.id ? (router.query.id as string) : "",
+    },
+    {
+      enabled: !!router.query.id,
+    },
+  );
+
+  console.log(userInfo.data);
 
   return (
     <div className="mx-auto max-w-md">

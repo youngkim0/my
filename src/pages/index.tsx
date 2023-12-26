@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <div className="mx-auto flex min-h-[100vh] max-w-md flex-col items-center">
       <Image
-        src="/images/front-logo.png"
+        src="/images/my-logo-colored.png"
         alt="logo"
         width={200}
         height={200}

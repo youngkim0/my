@@ -65,6 +65,7 @@ model tokens {
 
 model Clients {
     id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    userID      String
     name  String
     age  Int?
     gender String?
