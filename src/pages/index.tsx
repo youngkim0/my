@@ -1,10 +1,17 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 
 export default function Home() {
   const router = useRouter();
   const [checked, setChecked] = useState<boolean>(false);
+
+  const onClick = async () => {
+    await signIn("kakao", {
+      callbackUrl: "/my",
+    });
+  };
 
   return (
     <div className="mx-auto flex min-h-[100vh] max-w-md flex-col items-center">
@@ -19,7 +26,8 @@ export default function Home() {
       <div>
         <div
           className="mx-auto mt-20 flex w-[300px] cursor-pointer flex-row items-center  rounded-lg bg-[#ffeb3b]"
-          onClick={() => router.push("/home")}
+          // onClick={() => router.push("/my")}
+          onClick={onClick}
         >
           <Image src="/images/i-kakao.svg" width={42} height={42} alt="kakao" />
           <div className="px-12 text-base text-gray-800">카카오로 로그인</div>
