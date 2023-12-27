@@ -20,18 +20,18 @@ model User {
     email         String?
     emailVerified DateTime?
     image         String?
-    nickname      String?
+    nickname      String
     description   String?
     joinedAt      DateTime  @default(now())
     updatedAt     DateTime? @updatedAt
     expiresAt     DateTime?
-    instagram    String?
-    blog        String?
-    youtube     String?
-    name       String
-    store      String
-    Account Account[]
-    Session Session[]
+    instagram     String?
+    blog          String?
+    youtube       String?
+    name          String
+    store         String
+    Account       Account[]
+    Session       Session[]
 }
 
 model Account {
@@ -68,17 +68,27 @@ model tokens {
 }
 
 model Clients {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
-    userID      String
-    name  String
-    age  Int?
-    gender String?
-    phone String?
-    lastVisit DateTime?
-    createdAt DateTime? @default(now())
-    updatedAt DateTime? @updatedAt
-    lastTreat String?
-    lastConsult String?
-
+    id              String   @id @default(auto()) @map("_id") @db.ObjectId
+    userID          String
+    phoneNumber     String
+    name            String
+    gender          String
+    birth           String
+    visitPath       String
+    hairThickness   String
+    hairType        String
+    hairFerm        String
+    hairDye         String
+    hairClinic      String
+    hairStyle       String
+    interestService String
+    scalpType       String
+    dandruff        String
+    hairLoss        String
+    sensitiveScalp  String
+    tensionScalp    String
+    memo            String
+    important       String[]
+    styleConcept    String[]
+    importantHair   String[]
 }
-

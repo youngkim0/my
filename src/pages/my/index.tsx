@@ -8,6 +8,7 @@ import SearchCard from "~/components/SearchCard";
 import { signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import type { Clients } from "@prisma/client";
 
 const MyPage = () => {
   const [openNewCustomerModal, setOpenNewCustomerModal] =
@@ -15,6 +16,8 @@ const MyPage = () => {
   const [searched, setSearched] = useState<boolean>(false);
   const { data: session } = useSession();
   const router = useRouter();
+  const [searchText, setSearchText] = useState<string>("");
+  const [searchedCustomer, setSearchedCustomer] = useState<Clients[]>([]);
 
   const userInfo = api.account.getAccount.useQuery(
     {
@@ -31,6 +34,17 @@ const MyPage = () => {
     },
     {
       enabled: !!session?.user.name,
+    },
+  );
+  const customerList = api.customer.getCustomerList.useQuery(
+    {
+      id: session?.user.name ? session?.user.name : "",
+    },
+    {
+      enabled: !!session?.user.name,
+      onSuccess: (data) => {
+        setSearchedCustomer(data[0]);
+      },
     },
   );
 
@@ -93,19 +107,19 @@ const MyPage = () => {
                 <p className="text-xs font-semibold text-black">고객관리</p>
                 <p>
                   🎂 이달 생일인 고객{" "}
-                  <span className="font-bold text-black">11명</span>
+                  <span className="font-bold text-black">0명</span>
                 </p>
                 <p>
                   ✍🏻 이달 등록된 고객{" "}
-                  <span className="font-bold text-black">11명</span>
+                  <span className="font-bold text-black">0명</span>
                 </p>
                 <p>
                   🎉 오늘 생일인 고객{" "}
-                  <span className="font-bold text-black">11명</span>
+                  <span className="font-bold text-black">0명</span>
                 </p>
                 <p>
                   📝 오늘 등록된 고객{" "}
-                  <span className="font-bold text-black">11명</span>
+                  <span className="font-bold text-black">0명</span>
                 </p>
               </div>
               <div className="flex w-1/2 flex-col space-y-2">
@@ -115,14 +129,14 @@ const MyPage = () => {
                     <Image src="/images/i-naver2.png" alt="naver" fill />
                   </span>
                   <span className="text-[#a3a3a3]">네이버</span>
-                  <span className="font-bold text-black">11명</span>
+                  <span className="font-bold text-black">0명</span>
                 </p>
                 <p className="flex flex-row items-center space-x-2">
                   <span className="relative h-[14px] w-[14px]">
                     <Image src="/images/i-instagram2.png" alt="naver" fill />
                   </span>
                   <span className="text-[#a3a3a3]">인스타그램</span>
-                  <span className="font-bold text-black">11명</span>
+                  <span className="font-bold text-black">0명</span>
                 </p>
               </div>
             </div>
@@ -133,6 +147,8 @@ const MyPage = () => {
               className="focus:shadow-outline h-9 w-full rounded-lg border px-3 text-base text-gray-700 placeholder-gray-300
               placeholder:text-xs"
               placeholder="고객명을 입력해주세요"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
             <Image
               src="/images/i-search.png"
@@ -140,7 +156,14 @@ const MyPage = () => {
               width={20}
               height={20}
               className="absolute right-3 top-2"
-              onClick={() => setSearched(true)}
+              onClick={() => {
+                setSearchedCustomer(
+                  customerList.data?.filter((customer) =>
+                    customer.name.includes(searchText),
+                  ),
+                );
+                setSearched(true);
+              }}
             />
           </div>
           <div className="my-5 flex justify-center">
@@ -178,10 +201,14 @@ const MyPage = () => {
             </>
           ) : (
             <div className="mb-16 flex flex-col space-y-3">
-              <SearchCard />
-              <SearchCard />
-              <SearchCard />
-              <SearchCard />
+              {searchedCustomer?.map((customer) => (
+                <SearchCard
+                  name={customer.name}
+                  gender={customer.gender}
+                  age={customer.birth}
+                  digit={customer.phoneNumber}
+                />
+              ))}
             </div>
           )}
         </div>

@@ -7,6 +7,7 @@ import MainServices from "~/components/MainServices";
 import ConsultRequestModal from "~/components/ConsultRequestModal";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 const Home = () => {
   const [topbar, setTopbar] = useState<boolean>(true);
@@ -14,6 +15,7 @@ const Home = () => {
   const [consultRequestModal, setConsultRequestModal] =
     useState<boolean>(false);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const userInfo = api.account.getAccountByNickname.useQuery(
     {
@@ -52,11 +54,13 @@ const Home = () => {
           <Link href="/my">마이페이지</Link>
         </div> */}
         <div className="relative rounded-xl bg-white px-5 py-5">
-          <Link href="/my/edit">
-            <span className="absolute right-4 top-3 cursor-pointer text-sm text-blue-800">
-              수정하기
-            </span>
-          </Link>
+          {session?.user?.nickname === router.query.id && (
+            <Link href="/my/edit">
+              <span className="absolute right-4 top-3 cursor-pointer text-sm text-blue-800">
+                수정하기
+              </span>
+            </Link>
+          )}
           <div className="flex flex-row items-center space-x-5">
             <Image
               src={userInfo.data.image!}
