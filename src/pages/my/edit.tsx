@@ -78,7 +78,7 @@ const MyPage = () => {
       return;
     }
 
-    if (check === "true") {
+    if (check === "true" && userInfo.data?.nickname === "") {
       alert("이미 존재하는 아이디입니다.");
       return;
     }

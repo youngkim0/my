@@ -5,7 +5,7 @@ import Footer from "~/components/Footer";
 import { useState, useEffect } from "react";
 import NewCustomerModal from "~/components/NewCustomerModal";
 import SearchCard from "~/components/SearchCard";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import type { Clients } from "@prisma/client";
@@ -91,7 +91,6 @@ const MyPage = () => {
                 width={100}
                 height={100}
                 className="rounded-full"
-                onClick={() => signOut()}
               />
               <div className="relative w-full">
                 <p className="text-base">{userInfo.data.name}</p>
