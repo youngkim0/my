@@ -133,7 +133,11 @@ const MyPage = () => {
                 </p>
                 <p className="flex flex-row items-center space-x-2">
                   <span className="relative h-[14px] w-[14px]">
-                    <Image src="/images/i-instagram2.png" alt="naver" fill />
+                    <Image
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/132px-Instagram_logo_2016.svg.png"
+                      alt="naver"
+                      fill
+                    />
                   </span>
                   <span className="text-[#a3a3a3]">인스타그램</span>
                   <span className="font-bold text-black">0명</span>
@@ -162,7 +166,7 @@ const MyPage = () => {
                     customer.name.includes(searchText),
                   ),
                 );
-                
+
                 setSearched(true);
               }}
             />
