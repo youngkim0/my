@@ -158,10 +158,11 @@ const MyPage = () => {
               className="absolute right-3 top-2"
               onClick={() => {
                 setSearchedCustomer(
-                  customerList.data?.filter((customer) =>
+                  customerList.data!.filter((customer) =>
                     customer.name.includes(searchText),
                   ),
                 );
+                
                 setSearched(true);
               }}
             />
