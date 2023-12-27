@@ -5,12 +5,17 @@ import NewCustomerModal from "~/components/NewCustomerModal";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import TextareaAutosize from "react-textarea-autosize";
 
 type Form = {
   nickname: string;
   name: string;
   store: string;
+  description: string;
   image: string;
+  instagram: string;
+  blog: string;
+  youtube: string;
 };
 
 const MyPage = () => {
@@ -32,7 +37,11 @@ const MyPage = () => {
             nickname: data.nickname ?? "",
             name: data.name ?? "",
             store: data.store ?? "",
+            description: data.description ?? "",
             image: data.image ?? "",
+            instagram: data.instagram ?? "",
+            blog: data.blog ?? "",
+            youtube: data.youtube ?? "",
           });
       },
       enabled: !!session?.user.name,
@@ -48,7 +57,11 @@ const MyPage = () => {
     nickname: userInfo.data?.nickname ?? "",
     name: userInfo.data?.name ?? "",
     store: userInfo.data?.store ?? "",
+    description: userInfo.data?.description ?? "",
     image: userInfo.data?.image ?? "",
+    instagram: userInfo.data?.instagram ?? "",
+    blog: userInfo.data?.blog ?? "",
+    youtube: userInfo.data?.youtube ?? "",
   });
 
   const confirm = () => {
@@ -83,9 +96,13 @@ const MyPage = () => {
           id: session?.user.name ?? "",
           name: form.name,
           store: form.store,
+          description: form.description,
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
           image: res.secure_url,
           nickname: form.nickname,
+          instagram: form.instagram,
+          blog: form.blog,
+          youtube: form.youtube,
         });
 
         void router.push("/my");
@@ -177,6 +194,54 @@ const MyPage = () => {
                     }}
                   />
                 </div>
+                <div className="flex flex-col space-y-2">
+                  <p className="text-xs font-semibold text-black">설명</p>
+                  <TextareaAutosize
+                    minRows={3}
+                    className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"
+                    value={form.description}
+                    onChange={(e) => {
+                      setForm({ ...form, description: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <p className="text-xs font-semibold text-black">
+                    인스타그램 주소
+                  </p>
+                  <input
+                    className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"
+                    value={form.instagram}
+                    onChange={(e) => {
+                      setForm({ ...form, instagram: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <p className="text-xs font-semibold text-black">
+                    블로그 주소
+                  </p>
+                  <input
+                    className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"
+                    value={form.blog}
+                    onChange={(e) => {
+                      setForm({ ...form, blog: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <p className="text-xs font-semibold text-black">
+                    유튜브 주소
+                  </p>
+                  <input
+                    className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"
+                    value={form.youtube}
+                    onChange={(e) => {
+                      setForm({ ...form, youtube: e.target.value });
+                    }}
+                  />
+                </div>
+
                 <div className="flex justify-center py-5">
                   <button
                     className="h-12 w-48 rounded-full bg-[#2d2d2d] px-3 text-sm text-white"

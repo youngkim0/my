@@ -8,17 +8,20 @@ const ConsultRequestRequest = ({
   setPage: Dispatch<SetStateAction<string>>;
 }) => {
   return (
-    <>
+    <div className="px-3">
       <div className="text-sm">
-        <div className="mb-2 font-bold">
+        <div className="mt-7 text-lg font-bold tracking-wide">
           강연식님을 위해 최선을 다 하겠습니다.
         </div>
-        <div>마지막 상담일: 2023년 12월 3일</div>
-        <div>마지막 시술 상담: 컷트 & 클리닉</div>
-        <div className="mt-2 font-bold">상담 시술: 컷트</div>
+        <div className="mb-1 mt-4 font-bold">마지막 상담일</div>
+        <div>2023년 12월 3일</div>
+        <div className="mb-1 mt-6 font-bold">마지막 시술 상담 </div>
+        <div>컷트 & 클리닉</div>
+        <div className="mb-1 mt-2 mt-6 font-bold">상담 시술</div>
+        <div>컷트</div>
       </div>
       <div className="mt-6">
-        <p className="mb-3 text-base">현재</p>
+        <p className="mb-3 text-base font-bold">현재 스타일</p>
         <div className="flex flex-row space-x-3">
           <div className="flex h-52 w-52 flex-col items-center justify-center">
             <svg
@@ -126,7 +129,7 @@ const ConsultRequestRequest = ({
           상담확인
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

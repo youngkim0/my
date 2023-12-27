@@ -57,8 +57,12 @@ export const accountRouter = createTRPCRouter({
         id: z.string(),
         name: z.string(),
         store: z.string(),
+        description: z.string(),
         image: z.string(),
         nickname: z.string(),
+        instagram: z.string(),
+        blog: z.string(),
+        youtube: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -71,6 +75,10 @@ export const accountRouter = createTRPCRouter({
           store: input.store,
           image: input.image,
           nickname: input.nickname,
+          description: input.description,
+          instagram: input.instagram,
+          blog: input.blog,
+          youtube: input.youtube,
         },
       });
       return user;

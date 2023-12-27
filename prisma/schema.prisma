@@ -21,9 +21,13 @@ model User {
     emailVerified DateTime?
     image         String?
     nickname      String?
+    description   String?
     joinedAt      DateTime  @default(now())
     updatedAt     DateTime? @updatedAt
     expiresAt     DateTime?
+    instagram    String?
+    blog        String?
+    youtube     String?
     name       String
     store      String
     Account Account[]

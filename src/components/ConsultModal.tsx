@@ -36,9 +36,9 @@ export default function ConsultModal({
               leaveFrom="opacity-100 translate-y-0 "
               leaveTo="opacity-0 translate-y-4 "
             >
-              <Dialog.Panel className="relative h-full w-full max-w-md transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:max-w-[400px]">
-                <div className="text-sm">
-                  <div className="mb-2 font-bold">
+              <Dialog.Panel className="relative h-full w-full max-w-md transform overflow-hidden rounded-xl bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:max-w-[400px]">
+                <div className="mt-10 text-sm">
+                  <div className="mb-2  font-bold">
                     강연식님을 위해 최선을 다 하겠습니다.
                   </div>
                   <div>마지막 상담일: 2023년 12월 3일</div>

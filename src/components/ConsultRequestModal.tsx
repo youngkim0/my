@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import ConsultRequestMain from "./ConsultRequestMain";
 import ConsultRequestCheck from "./ConsultRequestCheck";
 import ConsultRequestRequest from "./ConsultRequestRequest";
-
+import Image from "next/image";
 export default function ConsultRequestModal({
   open,
   setOpen,
@@ -40,12 +40,13 @@ export default function ConsultRequestModal({
             >
               <Dialog.Panel className="relative h-full w-full max-w-md transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:max-w-[400px]">
                 <div className="absolute right-0 top-0 mr-4 mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md bg-white px-2 py-2 text-sm font-semibold text-gray-400 hover:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    onClick={() => setOpen(false)}
-                  >
-                    <span>닫기</span>
+                  <button type="button" onClick={() => setOpen(false)}>
+                    <Image
+                      src="/images/i-close.png"
+                      alt=""
+                      width={30}
+                      height={30}
+                    />
                   </button>
                 </div>
 
