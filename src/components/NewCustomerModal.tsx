@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 type Form = {
   name: string;
   gender: string;
+  phoneNumber: string;
   birth: string;
   visitPath: string;
   hairThickness: string;
@@ -44,6 +45,7 @@ export default function NewCustomerModal({
   const [form, setForm] = useState<Form>({
     name: "",
     gender: "남",
+    phoneNumber: "",
     birth: "",
     visitPath: "",
     hairThickness: "",
@@ -71,6 +73,7 @@ export default function NewCustomerModal({
     await addNewCustomer.mutateAsync({
       userID: session?.user.name ?? "",
       name: form.name,
+      phoneNumber: form.phoneNumber,
       gender: form.gender,
       birth: form.birth,
       visitPath: form.visitPath,
@@ -154,6 +157,18 @@ export default function NewCustomerModal({
                     <option value="남">남</option>
                     <option value="여">여</option>
                   </select>
+                  <div className="mt-4">전화번호(ex: 01023450987)</div>
+                  <input
+                    type="text"
+                    className="mt-2 w-full rounded-md bg-[#ececec] px-3 py-2 text-sm font-semibold text-gray-700"
+                    value={form.birth}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        birth: e.target.value,
+                      }))
+                    }
+                  />
                   <div className="mt-4">생년월일(ex: 930121)</div>
                   <input
                     type="text"
