@@ -78,7 +78,12 @@ const MyPage = () => {
         </div>
         <div className="mt-10 px-6">
           <div className="mb-3 font-bold">마이페이지</div>
-          <div className="rounded-xl bg-white px-5 py-5">
+          <div className="relative rounded-xl bg-white px-5 py-5">
+            <Link href="/my/edit">
+              <span className="absolute right-4 top-3 cursor-pointer text-sm text-blue-800">
+                수정하기
+              </span>
+            </Link>
             <div className="flex flex-row items-center space-x-5">
               <Image
                 src={userInfo.data.image ? userInfo.data.image : ""}
