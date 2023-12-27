@@ -64,6 +64,7 @@ export default function Home() {
         <KakaoLogin
           token={process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!}
           onSuccess={async (response) => {
+            console.log(response.profile?.id);
             if (response.profile) {
               const check = await checkRegistered.mutateAsync({
                 id: response.profile?.id.toString(),
