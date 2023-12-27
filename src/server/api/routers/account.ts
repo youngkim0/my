@@ -51,11 +51,22 @@ export const accountRouter = createTRPCRouter({
       });
       return user ? user[0] : null;
     }),
+  checkExistingNickname: publicProcedure
+    .input(z.object({ nickname: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findMany({
+        where: {
+          nickname: input.nickname,
+        },
+      });
+      return user ? "true" : "false";
+    }),
   updateAccount: protectedProcedure
     .input(
       z.object({
         id: z.string(),
         name: z.string(),
+        naverPlace: z.string(),
         store: z.string(),
         description: z.string(),
         image: z.string(),
@@ -73,6 +84,7 @@ export const accountRouter = createTRPCRouter({
         data: {
           name: input.name,
           store: input.store,
+          naverPlace: input.naverPlace,
           image: input.image,
           nickname: input.nickname,
           description: input.description,

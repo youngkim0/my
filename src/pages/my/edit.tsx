@@ -11,6 +11,7 @@ type Form = {
   nickname: string;
   name: string;
   store: string;
+  naverPlace: string;
   description: string;
   image: string;
   instagram: string;
@@ -37,6 +38,7 @@ const MyPage = () => {
             nickname: data.nickname ?? "",
             name: data.name ?? "",
             store: data.store ?? "",
+            naverPlace: data.naverPlace ?? "",
             description: data.description ?? "",
             image: data.image ?? "",
             instagram: data.instagram ?? "",
@@ -52,11 +54,13 @@ const MyPage = () => {
   const customerNumber = api.customer.getCustomerNumber.useQuery({
     id: session?.user.name ? session?.user.name : "",
   });
+  const checkNickname = api.account.checkExistingNickname.useMutation();
 
   const [form, setForm] = useState<Form>({
     nickname: userInfo.data?.nickname ?? "",
     name: userInfo.data?.name ?? "",
     store: userInfo.data?.store ?? "",
+    naverPlace: userInfo.data?.naverPlace ?? "",
     description: userInfo.data?.description ?? "",
     image: userInfo.data?.image ?? "",
     instagram: userInfo.data?.instagram ?? "",
@@ -64,15 +68,26 @@ const MyPage = () => {
     youtube: userInfo.data?.youtube ?? "",
   });
 
-  const confirm = () => {
+  const confirm = async () => {
+    const check = await checkNickname.mutateAsync({
+      nickname: form.nickname,
+    });
+    const test = /^[a-zA-Z0-9_]*$/;
+    if (!test.test(form.nickname)) {
+      alert("아이디는 영문, 숫자, _ 만 가능합니다.");
+      return;
+    }
+
+    if (check === "true") {
+      alert("이미 존재하는 아이디입니다.");
+      return;
+    }
+
     if (form.name === "") {
       alert("이름을 입력해주세요.");
       return;
     }
-    if (form.store === "") {
-      alert("가게명을 입력해주세요.");
-      return;
-    }
+
     if (form.nickname === "") {
       alert("아이디를 입력해주세요.");
       return;
@@ -81,6 +96,7 @@ const MyPage = () => {
       alert("프로필 사진을 등록해주세요.");
       return;
     }
+
     const formData = new FormData();
     formData.append("file", form.image);
     formData.append("upload_preset", "t3yt1oxa");
@@ -96,6 +112,7 @@ const MyPage = () => {
           id: session?.user.name ?? "",
           name: form.name,
           store: form.store,
+          naverPlace: form.naverPlace,
           description: form.description,
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
           image: res.secure_url,
@@ -135,12 +152,22 @@ const MyPage = () => {
                 ref={inputRef}
                 onChange={(e) => {
                   if (e.target.files) {
-                    const file = e.target.files[0];
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file!);
-                    reader.onload = () => {
-                      setForm({ ...form, image: reader.result as string });
-                    };
+                    const target = e.currentTarget;
+                    const file = target.files![0];
+                    const formData = new FormData();
+                    formData.append("file", file!);
+                    formData.append("upload_preset", "t3yt1oxa");
+                    fetch("https://api.cloudinary.com/v1_1/dzxtjyhmk/upload", {
+                      method: "POST",
+                      body: formData,
+                    })
+                      .then((res) => res.json())
+                      .then(async (res) => {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                        setForm({ ...form, image: res.secure_url });
+                      })
+                      .catch((err) => console.log(err));
                   }
                 }}
               />
@@ -202,6 +229,18 @@ const MyPage = () => {
                     value={form.description}
                     onChange={(e) => {
                       setForm({ ...form, description: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <p className="text-xs font-semibold text-black">
+                    예약하기 주소(네이버 플레이스)
+                  </p>
+                  <input
+                    className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"
+                    value={form.naverPlace}
+                    onChange={(e) => {
+                      setForm({ ...form, naverPlace: e.target.value });
                     }}
                   />
                 </div>

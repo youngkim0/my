@@ -26,6 +26,15 @@ const Home = () => {
     },
   );
 
+  const customerNumber = api.customer.getCustomerNumber.useQuery(
+    {
+      id: session?.user?.name ?? "",
+    },
+    {
+      enabled: !!session?.user?.name,
+    },
+  );
+
   if (!userInfo.data) return <></>;
 
   return (
@@ -38,7 +47,7 @@ const Home = () => {
       )}
       {topbar && (
         <div className="relative flex h-8 flex-row items-center justify-center bg-[#2D2D2D] text-sm text-white">
-          <span>96명 등록 완료</span>
+          <span>{customerNumber.data}명 등록 완료</span>
           <span
             className="absolute right-5 top-1 cursor-pointer"
             onClick={() => setTopbar(false)}
@@ -54,13 +63,6 @@ const Home = () => {
           <Link href="/my">마이페이지</Link>
         </div> */}
         <div className="relative rounded-xl bg-white px-5 py-5">
-          {session?.user?.nickname === router.query.id && (
-            <Link href="/my/edit">
-              <span className="absolute right-4 top-3 cursor-pointer text-sm text-blue-800">
-                수정하기
-              </span>
-            </Link>
-          )}
           <div className="flex flex-row items-center space-x-5">
             <Image
               src={userInfo.data.image!}
@@ -111,14 +113,7 @@ const Home = () => {
           >
             {userInfo.data.description}
           </div>
-          {/* {!showMore && (
-            <div
-              className="mt-2 cursor-pointer text-center text-sm text-blue-500"
-              onClick={() => setShowMore(true)}
-            >
-              더보기
-            </div>
-          )} */}
+
           <div className="mt-7 flex space-x-3">
             <div
               className="flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-full border border-solid border-[#2D2D2D] text-sm font-bold text-[#2D2D2D]"
@@ -126,11 +121,27 @@ const Home = () => {
             >
               상담하기
             </div>
-            <div className="flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-full bg-[#2D2D2D] text-sm text-white">
+            <button
+              className={`flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-full ${
+                userInfo.data.naverPlace !== "" &&
+                userInfo.data.naverPlace !== null
+                  ? "bg-[#2D2D2D]"
+                  : "bg-gray-400"
+              } text-sm text-white`}
+              disabled={
+                userInfo.data.naverPlace === "" || !userInfo.data.naverPlace
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                if (userInfo.data?.naverPlace)
+                  void router.push(userInfo.data.naverPlace);
+              }}
+            >
               예약하기
-            </div>
+            </button>
           </div>
         </div>
+
         <div className="my-12">
           <div className="mb-4 text-lg font-bold">고객 리뷰</div>
           <MainReviews />

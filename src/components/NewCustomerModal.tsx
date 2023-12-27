@@ -136,7 +136,7 @@ export default function NewCustomerModal({
                 <div className="text-sm">
                   <div className="mb-2 py-4 text-base font-bold">고객 등록</div>
 
-                  <div>이름</div>
+                  <div className="text-base font-semibold">이름</div>
                   <input
                     type="text"
                     className="mt-2 w-full rounded-md bg-[#ececec] px-3 py-2 text-sm font-semibold text-gray-700 focus:border-transparent focus:outline-none focus:ring-2 "
@@ -145,7 +145,7 @@ export default function NewCustomerModal({
                       setForm((prev) => ({ ...prev, name: e.target.value }))
                     }
                   />
-                  <div className="mt-4">성별</div>
+                  <div className="mt-4 text-base font-semibold">성별</div>
                   <select
                     className="mt-2 rounded-md bg-[#ececec] px-2 py-1"
                     tabIndex={-1}
@@ -157,7 +157,9 @@ export default function NewCustomerModal({
                     <option value="남">남</option>
                     <option value="여">여</option>
                   </select>
-                  <div className="mt-4">전화번호(ex: 01023450987)</div>
+                  <div className="mt-4 text-base font-semibold">
+                    전화번호(ex: 01023450987)
+                  </div>
                   <input
                     type="text"
                     className="mt-2 w-full rounded-md bg-[#ececec] px-3 py-2 text-sm font-semibold text-gray-700"
@@ -169,7 +171,9 @@ export default function NewCustomerModal({
                       }))
                     }
                   />
-                  <div className="mt-4">생년월일(ex: 930121)</div>
+                  <div className="mt-4 text-base font-semibold">
+                    생년월일(ex: 930121)
+                  </div>
                   <input
                     type="text"
                     className="mt-2 w-full rounded-md bg-[#ececec] px-3 py-2 text-sm font-semibold text-gray-700"
@@ -203,7 +207,9 @@ export default function NewCustomerModal({
                     setForm={setForm}
                   />
 
-                  <div className="mb-2 mt-6">최근 6개월 내 시술 경험 유무</div>
+                  <div className="mb-2 mt-6 text-base font-semibold">
+                    최근 6개월 내 시술 경험 유무
+                  </div>
                   <RadioGroup
                     title="펌"
                     items={["없음", "1회", "2회", "3회 이상"]}
@@ -293,34 +299,46 @@ export default function NewCustomerModal({
                   />
                   <RadioGroup
                     title="비듬"
-                    items={["부분", "두피"]}
+                    items={["부분", "두피", "해당 없음"]}
                     section="dandruff"
                     form={form}
                     setForm={setForm}
                   />
                   <RadioGroup
                     title="탈모"
-                    items={["영구적", "일시적", "부분적", "초기", "진전"]}
+                    items={[
+                      "영구적",
+                      "일시적",
+                      "부분적",
+                      "초기",
+                      "진전",
+                      "해당 없음",
+                    ]}
                     section="hairLoss"
                     form={form}
                     setForm={setForm}
                   />
                   <RadioGroup
                     title="민감성 두피"
-                    items={["붉은 반점(전체부분)", "염증", "가려움증"]}
+                    items={[
+                      "붉은 반점(전체부분)",
+                      "염증",
+                      "가려움증",
+                      "해당 없음",
+                    ]}
                     section="sensitiveScalp"
                     form={form}
                     setForm={setForm}
                   />
                   <RadioGroup
                     title="긴장성 두피"
-                    items={["따가움증", "각질"]}
+                    items={["따가움증", "각질", "해당 없음"]}
                     section="tensionScalp"
                     form={form}
                     setForm={setForm}
                   />
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 text-base font-semibold">
                   <p className="mb-2">추가 메모</p>
                   <TextareaAutosize
                     minRows={4}
@@ -366,7 +384,7 @@ const RadioGroup = ({
 }) => {
   return (
     <>
-      <div className="mt-4">{title}</div>
+      <div className="mt-4 text-base font-semibold">{title}</div>
       <fieldset className="mt-2">
         <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
           <div className="flex items-center space-x-3">
@@ -414,7 +432,7 @@ const CheckGroup = ({
 }) => {
   return (
     <>
-      <div className="mt-4">{title}</div>
+      <div className="mt-4 text-base font-semibold">{title}</div>
       <fieldset className="mt-2">
         <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
           <div className="flex flex-wrap items-center space-x-3">

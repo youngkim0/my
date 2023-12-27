@@ -82,4 +82,21 @@ export const customerRouter = createTRPCRouter({
       });
       return true;
     }),
+  checkCustomer: publicProcedure
+    .input(z.object({ name: z.string(), phoneNumber: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.clients.findMany({
+        where: {
+          name: input.name,
+        },
+      });
+      if (
+        user.length !== 0 &&
+        user[0]?.phoneNumber.slice(user[0]?.phoneNumber.length - 4) ===
+          input.phoneNumber
+      ) {
+        return true;
+      }
+      return false;
+    }),
 });

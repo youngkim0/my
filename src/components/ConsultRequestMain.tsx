@@ -1,10 +1,20 @@
 import type { Dispatch, SetStateAction } from "react";
-
+import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 const ConsultRequestMain = ({
   setPage,
 }: {
   setPage: Dispatch<SetStateAction<string>>;
 }) => {
+  const { data: session } = useSession();
+  const customerList = api.customer.getCustomerList.useQuery(
+    {
+      id: session?.user?.name ?? "",
+    },
+    {
+      enabled: !!session?.user?.name,
+    },
+  );
   return (
     <>
       <div className="text-base">
