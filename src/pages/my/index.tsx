@@ -43,7 +43,7 @@ const MyPage = () => {
     {
       enabled: !!session?.user.name,
       onSuccess: (data) => {
-        setSearchedCustomer(data[0]);
+        setSearchedCustomer(data);
       },
     },
   );
@@ -72,7 +72,7 @@ const MyPage = () => {
         />
       )}
 
-      <div className="mx-auto max-w-md">
+      <div className="mx-auto flex min-h-screen max-w-md flex-col">
         <div className="relative flex h-8 flex-row items-center justify-center bg-[#2d2d2d] text-sm text-white">
           <span>{customerNumber.data}명 등록 완료</span>
         </div>
@@ -212,7 +212,9 @@ const MyPage = () => {
             </div>
           )}
         </div>
-        <Footer />
+        <div className="mt-auto">
+          <Footer />
+        </div>
       </div>
     </>
   );
