@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { Dispatch, SetStateAction } from "react";
 import { useState, useRef } from "react";
 import Image from "next/image";
 import TextareaAutosize from "react-textarea-autosize";
+import { api } from "~/utils/api";
 
 type Images = {
   front1: string;
@@ -12,8 +16,10 @@ type Images = {
 
 const ConsultRequestRequest = ({
   setPage,
+  userInfo,
 }: {
   setPage: Dispatch<SetStateAction<string>>;
+  userInfo: { name: string; phone: string; clientID: string; userID: string };
 }) => {
   const [images, setImages] = useState<Images>({
     front1: "",
@@ -21,23 +27,53 @@ const ConsultRequestRequest = ({
     front2: "",
     side2: "",
   });
+  const [memo, setMemo] = useState<string>("");
+  const addNewConsult = api.customer.addCustomerConsult.useMutation();
   const front1Ref = useRef<HTMLInputElement>(null);
   const side1Ref = useRef<HTMLInputElement>(null);
   const front2Ref = useRef<HTMLInputElement>(null);
   const side2Ref = useRef<HTMLInputElement>(null);
 
+  const handleImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    number: number,
+  ) => {
+    if (e.target.files) {
+      const target = e.currentTarget;
+      const file = target.files![0];
+      const formData = new FormData();
+      formData.append("file", file!);
+      formData.append("upload_preset", "t3yt1oxa");
+      fetch("https://api.cloudinary.com/v1_1/dzxtjyhmk/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then(async (res) => {
+          if (number === 1) setImages({ ...images, front1: res.secure_url });
+          else if (number === 2)
+            setImages({ ...images, side1: res.secure_url });
+          else if (number === 3)
+            setImages({ ...images, front2: res.secure_url });
+          else if (number === 4)
+            setImages({ ...images, side2: res.secure_url });
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   return (
     <div className="px-3">
       <div className="text-sm">
         <div className="mt-7 text-lg font-bold tracking-wide">
-          강연식님을 위해 최선을 다 하겠습니다.
+          {userInfo.name}님을 위해 최선을 다 하겠습니다.
         </div>
         <div className="mb-1 mt-4 font-bold">마지막 상담일</div>
         <div>2023년 12월 3일</div>
-        <div className="mb-1 mt-6 font-bold">마지막 시술 상담 </div>
+        {/* <div className="mb-1 mt-6 font-bold">마지막 시술 상담 </div>
         <div>컷트 & 클리닉</div>
         <div className="mb-1 mt-6 font-bold">상담 시술</div>
-        <div>컷트</div>
+        <div>컷트</div> */}
       </div>
       <input
         type="file"
@@ -45,12 +81,7 @@ const ConsultRequestRequest = ({
         ref={front1Ref}
         onChange={(e) => {
           if (e.target.files) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.readAsDataURL(file!);
-            reader.onload = () => {
-              setImages({ ...images, front1: reader.result as string });
-            };
+            handleImageChange(e, 1);
           }
         }}
       />
@@ -60,12 +91,7 @@ const ConsultRequestRequest = ({
         ref={side1Ref}
         onChange={(e) => {
           if (e.target.files) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.readAsDataURL(file!);
-            reader.onload = () => {
-              setImages({ ...images, side1: reader.result as string });
-            };
+            handleImageChange(e, 2);
           }
         }}
       />
@@ -75,12 +101,7 @@ const ConsultRequestRequest = ({
         ref={front2Ref}
         onChange={(e) => {
           if (e.target.files) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.readAsDataURL(file!);
-            reader.onload = () => {
-              setImages({ ...images, front2: reader.result as string });
-            };
+            handleImageChange(e, 3);
           }
         }}
       />
@@ -90,12 +111,7 @@ const ConsultRequestRequest = ({
         ref={side2Ref}
         onChange={(e) => {
           if (e.target.files) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.readAsDataURL(file!);
-            reader.onload = () => {
-              setImages({ ...images, side2: reader.result as string });
-            };
+            handleImageChange(e, 4);
           }
         }}
       />
@@ -174,12 +190,26 @@ const ConsultRequestRequest = ({
         minRows={4}
         className="mt-3 w-full resize-none rounded-md bg-[#ececec] px-4 py-4 placeholder:text-sm placeholder:font-thin placeholder:tracking-wide placeholder:text-[#a3a3a3]"
         placeholder="내용을 입력해주세요."
+        value={memo}
+        onChange={(e) => setMemo(e.target.value)}
       />
       <div className="mt-4">
         <button
           type="button"
           className="inline-flex w-full justify-center rounded-full bg-[#2D2D2D] px-3 py-4 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          onClick={() => setPage("main")}
+          onClick={async () => {
+            await addNewConsult.mutateAsync({
+              customerID: userInfo.clientID,
+              userID: userInfo.userID,
+              front1: images.front1,
+              side1: images.side1,
+              front2: images.front2,
+              side2: images.side2,
+              memo,
+            });
+            alert("상담 신청이 완료되었습니다.");
+            setPage("main");
+          }}
         >
           저장
         </button>

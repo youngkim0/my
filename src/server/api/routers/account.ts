@@ -95,4 +95,30 @@ export const accountRouter = createTRPCRouter({
       });
       return user;
     }),
+  getAllReviews: publicProcedure
+    .input(z.object({ userID: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const userNickName = await ctx.db.user.findUnique({
+        where: {
+          kakaoID: input.userID,
+        },
+      });
+
+      const user = await ctx.db.clientReview.findMany({
+        where: {
+          userID: userNickName?.kakaoID,
+        },
+      });
+      return user;
+    }),
+  getReviewByID: publicProcedure
+    .input(z.object({ reviewID: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.clientReview.findUnique({
+        where: {
+          id: input.reviewID,
+        },
+      });
+      return user;
+    }),
 });

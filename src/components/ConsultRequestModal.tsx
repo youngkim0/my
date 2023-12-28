@@ -4,8 +4,7 @@ import ConsultRequestMain from "./ConsultRequestMain";
 import ConsultRequestCheck from "./ConsultRequestCheck";
 import ConsultRequestRequest from "./ConsultRequestRequest";
 import Image from "next/image";
-import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
+
 export default function ConsultRequestModal({
   open,
   setOpen,
@@ -14,15 +13,13 @@ export default function ConsultRequestModal({
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [page, setPage] = useState<string>("main");
-  const { data: session } = useSession();
-  const customerList = api.customer.getCustomerList.useQuery(
-    {
-      id: session?.user?.name ?? "",
-    },
-    {
-      enabled: !!session?.user?.name,
-    },
-  );
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    phone: "",
+    clientID: "",
+    userID: "",
+  });
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[2000]" onClose={setOpen}>
@@ -61,10 +58,20 @@ export default function ConsultRequestModal({
                   </button>
                 </div>
 
-                {page === "main" && <ConsultRequestMain setPage={setPage} />}
-                {page === "check" && <ConsultRequestCheck setPage={setPage} />}
+                {page === "main" && (
+                  <ConsultRequestMain
+                    setPage={setPage}
+                    setUserInfo={setUserInfo}
+                  />
+                )}
+                {page === "check" && (
+                  <ConsultRequestCheck setPage={setPage} userInfo={userInfo} />
+                )}
                 {page === "request" && (
-                  <ConsultRequestRequest setPage={setPage} />
+                  <ConsultRequestRequest
+                    setPage={setPage}
+                    userInfo={userInfo}
+                  />
                 )}
               </Dialog.Panel>
             </Transition.Child>

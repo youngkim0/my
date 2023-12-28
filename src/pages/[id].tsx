@@ -17,6 +17,7 @@ const Home = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
+
   const userInfo = api.account.getAccountByNickname.useQuery(
     {
       nickname: router.query.id ? (router.query.id as string) : "",
@@ -144,7 +145,7 @@ const Home = () => {
 
         <div className="my-12">
           <div className="mb-4 text-lg font-bold">고객 리뷰</div>
-          <MainReviews />
+          <MainReviews id={router.query.id as string} />
           <div className="mb-4 mt-12 text-lg font-bold">시그니쳐 시술</div>
           <MainServices />
         </div>

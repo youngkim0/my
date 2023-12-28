@@ -47,6 +47,14 @@ const MyPage = () => {
       },
     },
   );
+  const consultList = api.customer.getCustomerConsultList.useQuery(
+    {
+      userID: session?.user.name ? session?.user.name : "",
+    },
+    {
+      enabled: !!session?.user.name,
+    },
+  );
 
   useEffect(() => {
     if (userInfo.data) {
@@ -159,19 +167,23 @@ const MyPage = () => {
               onChange={(e) => setSearchText(e.target.value)}
             />
             <Image
-              src="/images/i-search.png"
+              src={!searched ? "/images/i-search.png" : "/images/i-close.png"}
               alt="search"
               width={20}
               height={20}
               className="absolute right-3 top-2"
               onClick={() => {
+                if (searched) {
+                  setSearched(false);
+                  setSearchText("");
+                  return;
+                }
+                setSearched(true);
                 setSearchedCustomer(
                   customerList.data!.filter((customer) =>
                     customer.name.includes(searchText),
                   ),
                 );
-
-                setSearched(true);
               }}
             />
           </div>
@@ -188,30 +200,50 @@ const MyPage = () => {
               <div className="flex justify-center space-x-2 text-xs text-[#a2a2a2]">
                 <span>
                   오늘 상담 신청:{" "}
-                  <span className="font-bold text-black">8명</span>
+                  <span className="font-bold text-black">
+                    {
+                      consultList.data?.filter((a) => {
+                        const today = new Date();
+                        const date = new Date(a.createdAt);
+                        return (
+                          today.getFullYear() === date.getFullYear() &&
+                          today.getMonth() === date.getMonth() &&
+                          today.getDate() === date.getDate()
+                        );
+                      }).length
+                    }
+                    건
+                  </span>
                 </span>
                 <span>|</span>
                 <span>
-                  답변 완료: <span className="font-bold text-black">3/8명</span>
+                  답변 완료:{" "}
+                  <span className="font-bold text-black">
+                    {consultList.data?.filter((a) => a.replied).length}/
+                    {consultList.data?.length}건
+                  </span>
                 </span>
                 <span>|</span>
                 <span>
-                  미답변: <span className="font-bold text-black">5/8명</span>
+                  미답변:{" "}
+                  <span className="font-bold text-black">
+                    {consultList.data?.filter((a) => !a.replied).length}/
+                    {consultList.data?.length}건
+                  </span>
                 </span>
               </div>
 
               <div className="mb-12 mt-3 flex flex-col space-y-2">
-                <ConsultCard type="" />
-                <ConsultCard type="" />
-
-                <ConsultCard type="done" />
-                <ConsultCard type="done" />
+                {consultList.data?.map((consult) => (
+                  <ConsultCard consult={consult} />
+                ))}
               </div>
             </>
           ) : (
             <div className="mb-16 flex flex-col space-y-3">
               {searchedCustomer?.map((customer) => (
                 <SearchCard
+                  id={customer.id}
                   name={customer.name}
                   gender={customer.gender}
                   age={customer.birth}

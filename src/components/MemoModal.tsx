@@ -1,15 +1,44 @@
-import { Fragment, type SetStateAction, type Dispatch } from "react";
+import { Fragment, type SetStateAction, type Dispatch, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import TextareaAutosize from "react-textarea-autosize";
 import { format } from "date-fns";
+import Image from "next/image";
+import type { Clients } from "@prisma/client";
+import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 export default function MemoModal({
   open,
   setOpen,
+  customerInfo,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  customerInfo: Clients;
 }) {
+  const { data: session } = useSession();
+  const util = api.useUtils();
+  const [memoText, setMemoText] = useState<string>("");
+  const customerMemo = api.customer.getCustomerMemo.useQuery(
+    {
+      clientID: customerInfo.id,
+      userID: session?.user.name ?? "",
+    },
+    {
+      enabled: !!customerInfo.id && !!session?.user.name,
+    },
+  );
+  console.log(customerInfo.id, session?.user.name);
+  console.log(customerMemo.data);
+  const addMemo = api.customer.addCustomerMemo.useMutation({
+    onSuccess: async () => {
+      await util.customer.getCustomerMemo.invalidate({
+        clientID: customerInfo.id,
+        userID: session?.user.name ?? "",
+      });
+    },
+  });
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[2000]" onClose={setOpen}>
@@ -37,64 +66,161 @@ export default function MemoModal({
               leaveTo="opacity-0 translate-y-4 "
             >
               <Dialog.Panel className="relative h-full w-full max-w-md transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:max-w-[400px]">
+                <div className="absolute right-0 top-0 mr-4 mt-4">
+                  <button type="button" onClick={() => setOpen(false)}>
+                    <Image
+                      src="/images/i-close.png"
+                      alt=""
+                      width={30}
+                      height={30}
+                    />
+                  </button>
+                </div>
                 <div className="text-sm">
                   <div className="mb-2 text-base font-bold">고객 정보</div>
-                  <div className="flex flex-row space-x-3">
-                    <span>강연식 남</span>
+                  <div className="flex flex-row space-x-3 text-base">
+                    <span>
+                      {customerInfo.name} {customerInfo.gender}
+                    </span>
                     <span>|</span>
-                    <span>28세</span>
+                    <span>
+                      {new Date().getFullYear() -
+                        parseInt(customerInfo.birth.slice(0, 4))}
+                      세
+                    </span>
                     <span>|</span>
-                    <span>97.12.11</span>
-                  </div>
-                  <div>
-                    <span>010-1232-0022</span>
-                    <span className="ml-5 cursor-pointer text-blue-800">
-                      수정
+                    <span>
+                      {customerInfo.birth.slice(0, 4) +
+                        "." +
+                        customerInfo.birth.slice(4, 6) +
+                        "." +
+                        customerInfo.birth.slice(6)}
                     </span>
                   </div>
-                  <div className="mt-6">
-                    <div>가는모발 / 직모</div>
-                    <div>최근 6개월 내 펌 1회, 염색 1회, 클리닉 0회</div>
+                  <div>
+                    <span>
+                      {customerInfo.phoneNumber.slice(0, 3) +
+                        "-" +
+                        customerInfo.phoneNumber.slice(3, 7) +
+                        "-" +
+                        customerInfo.phoneNumber.slice(7)}
+                    </span>
+                    <span className="ml-10 cursor-pointer text-blue-800">
+                      수정
+                    </span>
+                    <span className="ml-5 cursor-pointer text-red-800">
+                      삭제
+                    </span>
                   </div>
-                  <div className="mt-6">
-                    <div>
-                      커트에 관심있고 길이와 컬러를 중요하게 생 각하며,
-                      어려보이고, 고급스러운 스타일을 추 구. 헤어스타일에서
-                      손질이 어렵다.
-                    </div>
+                  <div className="mt-4">방문경로: {customerInfo.visitPath}</div>
+                  <div className="mt-3">
+                    모발굵기: {customerInfo.hairThickness}
+                  </div>
+                  <div className="mt-3">모발종류: {customerInfo.hairType}</div>
+
+                  <div className="mt-3">
+                    <p>최근6개월 내 시술 경험</p> 펌: {customerInfo.hairFerm},
+                    염색: {customerInfo.hairDye}, 클리닉:{" "}
+                    {customerInfo.hairClinic}
+                  </div>
+                  <div className="mt-3">
+                    관심 있는 시술: {customerInfo.interestService}
+                  </div>
+                  <div className="mt-3">
+                    <p>헤어스타일에서 중요하게 생각하는 부분:</p>
+                    {customerInfo.importantHair.map((item, index) => (
+                      <span className="mr-2">
+                        {item}
+                        {index !== customerInfo.importantHair.length - 1
+                          ? ","
+                          : ""}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-3">
+                    <p>고객이 추구하는 스타일 컨셉:</p>
+                    {customerInfo.styleConcept.map((item, index) => (
+                      <span className="mr-2">
+                        {item}
+                        {index !== customerInfo.styleConcept.length - 1
+                          ? ","
+                          : ""}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-3">
+                    <p>고객이 중요하게 생각하는 것:</p>
+                    {customerInfo.important.map((item, index) => (
+                      <span className="mr-2">
+                        {item}
+                        {index !== customerInfo.important.length - 1 ? "," : ""}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-3">
+                    두피 유형: {customerInfo.scalpType}
+                  </div>
+                  <div className="mt-3">비듬: {customerInfo.dandruff}</div>
+                  <div className="mt-3">탈모: {customerInfo.hairLoss}</div>
+                  <div className="mt-3">
+                    민감성 두피: {customerInfo.sensitiveScalp}
+                  </div>
+                  <div className="mt-3">
+                    긴장성 두피: {customerInfo.tensionScalp}
+                  </div>
+                  <div className="mt-3 whitespace-pre-wrap">
+                    <p>추가 정보:</p> {customerInfo.memo}
                   </div>
                 </div>
+
                 <div className="mt-6">
                   <p className="mb-3 text-base font-bold">고객 메모</p>
                   <div>{format(new Date(), "yyyy년 MM월 dd일")}</div>
                   <TextareaAutosize
                     minRows={4}
-                    className="mt-3 w-full resize-none border border-solid border-gray-300 px-2 py-2"
+                    className="mt-3 w-full resize-none rounded-md bg-[#ececec] px-3 py-3"
                     placeholder="내용을 입력해주세요."
+                    value={memoText}
+                    onChange={(e) => setMemoText(e.target.value)}
                   />
-                  <button className="mt-3 w-full rounded-full bg-purple-500 px-3 py-2 text-base text-white">
+                  <button
+                    className="mt-3 w-full rounded-full bg-[#2d2d2d] px-3 py-2 text-base text-white"
+                    onClick={async () => {
+                      await addMemo.mutateAsync({
+                        customerID: customerInfo.id,
+                        userID: session?.user?.name ?? "",
+                        memo: memoText,
+                      });
+                      setMemoText("");
+                    }}
+                  >
                     메모 저장
                   </button>
                 </div>
 
                 <div className="mt-6">
-                  <div>2023년 11월 31일</div>
-                  <div className="mt-2 bg-blue-800 px-2 py-2 text-sm text-white">
-                    {`
-                      머리가 많이 상해서, 클리닉 서비스로 한번 진행.
-내일 여자친구랑 데이트 간다고함.
-기존 컬러가 많이 지루하다함.
-사이드 2호로 말아서 뽀글함.
-두피에 염색약이 안지워져있고 머리가 숱이 장난 아
-니게 많음. 말이 많음. 기빨린날임.
-                    `}
-                  </div>
+                  {customerMemo.data
+                    ?.sort(
+                      (a, b) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime(),
+                    )
+                    .map((item) => (
+                      <>
+                        <div className="mt-3">
+                          {format(new Date(item.createdAt), "yyyy년 MM월 dd일")}
+                        </div>
+                        <div className="mt-2 rounded-md bg-gray-700 px-3 py-3 text-sm text-white">
+                          {item.memo}
+                        </div>
+                      </>
+                    ))}
                 </div>
 
-                <div className="mt-4">
+                <div className="mb-4 mt-8">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="inline-flex w-full justify-center rounded-full bg-[#808DD0] px-3 py-3 text-white  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
                     onClick={() => setOpen(false)}
                   >
                     닫기

@@ -94,6 +94,7 @@ export default function NewCustomerModal({
       styleConcept: formCheckbox.styleConcept,
       importantHair: formCheckbox.importantHair,
     });
+    setOpen(false);
   };
 
   return (
@@ -163,16 +164,16 @@ export default function NewCustomerModal({
                   <input
                     type="text"
                     className="mt-2 w-full rounded-md bg-[#ececec] px-3 py-2 text-sm font-semibold text-gray-700"
-                    value={form.birth}
+                    value={form.phoneNumber}
                     onChange={(e) =>
                       setForm((prev) => ({
                         ...prev,
-                        birth: e.target.value,
+                        phoneNumber: e.target.value,
                       }))
                     }
                   />
                   <div className="mt-4 text-base font-semibold">
-                    생년월일(ex: 930121)
+                    생년월일(ex: 19930121 혹은 20020101)
                   </div>
                   <input
                     type="text"
@@ -320,12 +321,7 @@ export default function NewCustomerModal({
                   />
                   <RadioGroup
                     title="민감성 두피"
-                    items={[
-                      "붉은 반점(전체부분)",
-                      "염증",
-                      "가려움증",
-                      "해당 없음",
-                    ]}
+                    items={["붉은 반점", "염증", "가려움증", "해당 없음"]}
                     section="sensitiveScalp"
                     form={form}
                     setForm={setForm}
@@ -388,7 +384,31 @@ const RadioGroup = ({
       <fieldset className="mt-2">
         <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
           <div className="flex items-center space-x-3">
-            {items.map((item) => (
+            {items.slice(0, 5).map((item) => (
+              <Fragment key={item}>
+                <input
+                  id={item + title}
+                  name={item + title}
+                  type="radio"
+                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  checked={form[section as keyof Form] === item}
+                  onChange={() => {
+                    const newForm = { ...form };
+                    newForm[section as keyof Form] = item;
+                    setForm(newForm);
+                  }}
+                />
+                <label
+                  htmlFor="thickness"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  {item}
+                </label>
+              </Fragment>
+            ))}
+          </div>
+          <div className="flex items-center space-x-3">
+            {items.slice(5, 10).map((item) => (
               <Fragment key={item}>
                 <input
                   id={item}

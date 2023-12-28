@@ -1,14 +1,22 @@
 import { Fragment, type SetStateAction, type Dispatch } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
+import { api } from "~/utils/api";
 
 export default function ReviewModal({
   open,
   setOpen,
+  reviewID,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  reviewID: string;
 }) {
+  const review = api.account.getReviewByID.useQuery({
+    reviewID: reviewID,
+  });
+
+  if (!review.data) return <></>;
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[2000]" onClose={setOpen}>
@@ -38,23 +46,19 @@ export default function ReviewModal({
               <Dialog.Panel className="relative h-[520px] w-full max-w-md transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:max-w-[400px]">
                 <div className="relative h-60 w-full">
                   <Image
-                    src="/images/sample_hair.png"
+                    src={review.data.image}
                     fill
                     alt="review"
                     quality={100}
                   />
                 </div>
                 <div className="h-44 overflow-y-auto break-keep px-2 py-5 text-sm">
-                  이 미용실은 정말로 최고예요! 전문적이고 친절한 스태프들이 항상
-                  웃음으로 맞이해줍니다. 최신 트렌드에 맞춘 스타일링에 정말
-                  만족했고, 특히 손님을 위한 세심한 배려가 눈에 띕니다. 깨끗하고
-                  아늑한 분위기도 좋아 자주 방문하게 되었어요. 다양한 서비스와
-                  훌륭한 경험을 제공해주셔서 감사합니다!
+                  {review.data.review}
                 </div>
                 <div className="mt-4">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="inline-flex w-full justify-center rounded-full bg-[#2d2d2d] px-3 py-3 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     onClick={() => setOpen(false)}
                   >
                     닫기

@@ -7,17 +7,21 @@ const SearchCard = ({
   gender,
   age,
   digit,
+  id,
 }: {
   name: string;
   gender: string;
   age: string;
   digit: string;
+  id: string;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
+  const ageToday = new Date().getFullYear() - parseInt(age.slice(0, 4));
+
   return (
     <>
-      {open && <CustomerModal open={open} setOpen={setOpen} />}
+      {open && <CustomerModal open={open} setOpen={setOpen} id={id} />}
       <div
         className={`w-full cursor-pointer rounded-lg bg-white px-4 py-3 text-xs text-black`}
         onClick={() => setOpen(true)}
@@ -28,7 +32,7 @@ const SearchCard = ({
             <span>|</span>
             <span>{gender}</span>
             <span>|</span>
-            <span>{age}세</span>
+            <span>{ageToday}세</span>
             <span>|</span>
             <span>{digit.slice(digit.length - 4)}</span>
           </div>

@@ -97,34 +97,21 @@ const MyPage = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", form.image);
-    formData.append("upload_preset", "t3yt1oxa");
-    fetch("https://api.cloudinary.com/v1_1/dzxtjyhmk/upload", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(async (res) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    await updateAccount.mutateAsync({
+      id: session?.user.name ?? "",
+      name: form.name,
+      store: form.store,
+      naverPlace: form.naverPlace,
+      description: form.description,
 
-        await updateAccount.mutateAsync({
-          id: session?.user.name ?? "",
-          name: form.name,
-          store: form.store,
-          naverPlace: form.naverPlace,
-          description: form.description,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-          image: res.secure_url,
-          nickname: form.nickname,
-          instagram: form.instagram,
-          blog: form.blog,
-          youtube: form.youtube,
-        });
+      image: form.image,
+      nickname: form.nickname,
+      instagram: form.instagram,
+      blog: form.blog,
+      youtube: form.youtube,
+    });
 
-        void router.push("/my");
-      })
-      .catch((err) => console.log(err));
+    void router.push("/my");
   };
 
   if (!userInfo.data) return <div></div>;
