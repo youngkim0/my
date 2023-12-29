@@ -121,4 +121,36 @@ export const accountRouter = createTRPCRouter({
       });
       return user;
     }),
+  addService: protectedProcedure
+    .input(
+      z.object({
+        userID: z.string(),
+        name: z.string(),
+        content: z.string(),
+        image: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.service.create({
+        data: {
+          userID: input.userID,
+          name: input.name,
+          content: input.content,
+          image: input.image,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+      return user;
+    }),
+  getAllServices: publicProcedure
+    .input(z.object({ userID: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.service.findMany({
+        where: {
+          userID: input.userID,
+        },
+      });
+      return user;
+    }),
 });

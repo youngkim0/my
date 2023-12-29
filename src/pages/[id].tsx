@@ -8,6 +8,7 @@ import ConsultRequestModal from "~/components/ConsultRequestModal";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { signOut, useSession } from "next-auth/react";
+import EditServiceModal from "~/components/EditServiceModal";
 
 const Home = () => {
   const [topbar, setTopbar] = useState<boolean>(true);
@@ -16,6 +17,7 @@ const Home = () => {
     useState<boolean>(false);
   const router = useRouter();
   const { data: session } = useSession();
+  const [openServiceModal, setOpenServiceModal] = useState<boolean>(false);
 
   const userInfo = api.account.getAccountByNickname.useQuery(
     {
@@ -35,7 +37,15 @@ const Home = () => {
     },
   );
 
-  if (!userInfo.data) return <></>;
+  const serviceList = api.account.getAllServices.useQuery(
+    {
+      userID: router.query.id ? (router.query.id as string) : "",
+    },
+    {
+      enabled: !!router.query.id,
+    },
+  );
+  if (!userInfo.data || !serviceList.data) return <></>;
 
   return (
     <div className="mx-auto max-w-md">
@@ -144,13 +154,28 @@ const Home = () => {
           </div>
         </div>
 
+        {openServiceModal && (
+          <EditServiceModal
+            open={openServiceModal}
+            setOpen={setOpenServiceModal}
+            userNickname={router.query.id ? (router.query.id as string) : ""}
+          />
+        )}
         <div className="my-12">
           <div className="mb-4 text-lg font-bold">고객 리뷰</div>
           <MainReviews id={router.query.id as string} />
-          <div className="mb-4 mt-12 text-lg font-bold">시그니쳐 시술</div>
-          <MainServices
-            owner={session?.user.nickname === router.query.id ? true : false}
-          />
+          <div className="mb-4 mt-12 flex flex-row space-x-8 text-lg font-bold">
+            <span>시그니쳐 시술</span>
+            {session?.user.nickname === router.query.id && (
+              <span
+                className="cursor-pointer font-semibold text-blue-700"
+                onClick={() => setOpenServiceModal(true)}
+              >
+                새로 추가
+              </span>
+            )}
+          </div>
+          <MainServices services={serviceList.data} />
         </div>
       </div>
       <Footer />

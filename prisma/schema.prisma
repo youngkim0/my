@@ -129,3 +129,13 @@ model ClientReview {
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
 }
+
+model Service {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    userID     String
+    name       String
+    image      String 
+    content    String
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
