@@ -70,9 +70,11 @@ export const authOptions: NextAuthOptions = {
     session({ session, token }) {
       session.user.id = token.id as string;
       if (token.name) session.user.name = token.name;
+      if (token.nickname) session.user.nickname = token.nickname;
+
       // if (token.kakaoID) session.user.kakaoID = token.kakaoID;
       console.log("SESSION");
-
+      console.log(session);
       return session;
     },
   },

@@ -16,6 +16,22 @@ export const customerRouter = createTRPCRouter({
       });
       return user.length;
     }),
+    getCustomerNumerByNickname: publicProcedure
+    .input(z.object({ nickname: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const id = await ctx.db.user.findMany({
+        where: {
+          nickname: input.nickname,
+        },
+      });
+      const user = await ctx.db.clients.findMany({
+        where: {
+          userID: id[0]?.kakaoID,
+          
+        },
+      });
+      return user.length;
+    }),
   getCustomerList: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {

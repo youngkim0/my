@@ -7,7 +7,7 @@ import MainServices from "~/components/MainServices";
 import ConsultRequestModal from "~/components/ConsultRequestModal";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const Home = () => {
   const [topbar, setTopbar] = useState<boolean>(true);
@@ -16,7 +16,6 @@ const Home = () => {
     useState<boolean>(false);
   const router = useRouter();
   const { data: session } = useSession();
-
 
   const userInfo = api.account.getAccountByNickname.useQuery(
     {
@@ -27,12 +26,12 @@ const Home = () => {
     },
   );
 
-  const customerNumber = api.customer.getCustomerNumber.useQuery(
+  const customerNumber = api.customer.getCustomerNumerByNickname.useQuery(
     {
-      id: session?.user?.name ?? "",
+      nickname: router.query.id ? (router.query.id as string) : "",
     },
     {
-      enabled: !!session?.user?.name,
+      enabled: !!router.query.id,
     },
   );
 
@@ -48,7 +47,9 @@ const Home = () => {
       )}
       {topbar && (
         <div className="relative flex h-8 flex-row items-center justify-center bg-[#2D2D2D] text-sm text-white">
-          <span>{customerNumber.data}명 등록 완료</span>
+          <span onClick={() => void signOut()}>
+            {customerNumber.data}명 등록 완료
+          </span>
           <span
             className="absolute right-5 top-1 cursor-pointer"
             onClick={() => setTopbar(false)}
@@ -147,7 +148,9 @@ const Home = () => {
           <div className="mb-4 text-lg font-bold">고객 리뷰</div>
           <MainReviews id={router.query.id as string} />
           <div className="mb-4 mt-12 text-lg font-bold">시그니쳐 시술</div>
-          <MainServices />
+          <MainServices
+            owner={session?.user.nickname === router.query.id ? true : false}
+          />
         </div>
       </div>
       <Footer />
