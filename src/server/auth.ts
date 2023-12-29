@@ -22,6 +22,7 @@ declare module "next-auth" {
       id: string;
       kakaoID: string;
       name?: string;
+      nickname?: string;
 
       // ...other properties
       // role: UserRole;
@@ -32,6 +33,7 @@ declare module "next-auth" {
     id: string;
     kakaoID: string;
     name?: string;
+    nickname?: string;
 
     // ...other properties
     // role: UserRole;
@@ -58,6 +60,7 @@ export const authOptions: NextAuthOptions = {
         params.token.id = params.user.id;
         params.token.kakaoID = params.user.kakaoID;
         params.token.name = params.user.kakaoID;
+        if (params.user.nickname) params.token.nickname = params.user.nickname;
       }
       console.log("JWT", params.token);
 
@@ -83,7 +86,6 @@ export const authOptions: NextAuthOptions = {
         const { email } = credentials as {
           email: string;
         };
-
         const user = await db.user.findUnique({
           where: {
             kakaoID: email,

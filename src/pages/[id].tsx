@@ -7,13 +7,16 @@ import MainServices from "~/components/MainServices";
 import ConsultRequestModal from "~/components/ConsultRequestModal";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 const Home = () => {
   const [topbar, setTopbar] = useState<boolean>(true);
-  const [showMore, setShowMore] = useState<boolean>(false);
+  // const [showMore, setShowMore] = useState<boolean>(false);
   const [consultRequestModal, setConsultRequestModal] =
     useState<boolean>(false);
   const router = useRouter();
+  const { data: session } = useSession();
+
 
   const userInfo = api.account.getAccountByNickname.useQuery(
     {
@@ -24,7 +27,16 @@ const Home = () => {
     },
   );
 
-  console.log(userInfo.data);
+  const customerNumber = api.customer.getCustomerNumber.useQuery(
+    {
+      id: session?.user?.name ?? "",
+    },
+    {
+      enabled: !!session?.user?.name,
+    },
+  );
+
+  if (!userInfo.data) return <></>;
 
   return (
     <div className="mx-auto max-w-md">
@@ -36,7 +48,7 @@ const Home = () => {
       )}
       {topbar && (
         <div className="relative flex h-8 flex-row items-center justify-center bg-[#2D2D2D] text-sm text-white">
-          <span>96명 등록 완료</span>
+          <span>{customerNumber.data}명 등록 완료</span>
           <span
             className="absolute right-5 top-1 cursor-pointer"
             onClick={() => setTopbar(false)}
@@ -51,62 +63,58 @@ const Home = () => {
         {/* <div className="mt-16 cursor-pointer text-end text-sm text-blue-700">
           <Link href="/my">마이페이지</Link>
         </div> */}
-        <div className="rounded-xl bg-white px-5 py-5">
+        <div className="relative rounded-xl bg-white px-5 py-5">
           <div className="flex flex-row items-center space-x-5">
             <Image
-              src="/images/avatar_sample.jpeg"
+              src={userInfo.data.image!}
               alt=""
               width={100}
               height={100}
               className="rounded-full"
             />
             <div className="relative w-full">
-              <p className="text-lg">김재원 대표원장</p>
-              <p className="pt-1 text-sm text-[#A3A3A3]">압구정 헤어센터</p>
+              <p className="text-lg">{userInfo.data.name}</p>
+              <p className="pt-1 text-sm text-[#A3A3A3]">
+                {userInfo.data.store}
+              </p>
               <div className="mt-3 flex flex-row">
-                <Link
-                  className="relative h-7 w-9"
-                  href="https://instagram.com"
-                  target="_blank"
-                >
-                  <Image src="/images/instagram.png" fill alt="instagram" />
-                </Link>
-                <Link
-                  className="relative ml-3 h-7 w-7"
-                  href="https://blog.naver.com"
-                  target="_blank"
-                >
-                  <Image src="/images/blog.png" fill alt="blog" />
-                </Link>
-                <Link
-                  className="relative ml-4 h-7 w-7"
-                  href="https://youtube.com"
-                  target="_blank"
-                >
-                  <Image src="/images/youtube2.png" fill alt="youtube" />
-                </Link>
+                {userInfo.data.instagram && (
+                  <Link
+                    className="relative h-7 w-9"
+                    href={userInfo.data.instagram}
+                    target="_blank"
+                  >
+                    <Image src="/images/instagram.png" fill alt="instagram" />
+                  </Link>
+                )}
+                {userInfo.data.blog && (
+                  <Link
+                    className="relative ml-3 h-7 w-7"
+                    href={userInfo.data.blog}
+                    target="_blank"
+                  >
+                    <Image src="/images/blog.png" fill alt="blog" />
+                  </Link>
+                )}
+                {userInfo.data.youtube && (
+                  <Link
+                    className="relative ml-4 h-7 w-7"
+                    href={userInfo.data.youtube}
+                    target="_blank"
+                  >
+                    <Image src="/images/youtube2.png" fill alt="youtube" />
+                  </Link>
+                )}
               </div>
             </div>
           </div>
           <div
-            className={`mt-5 ${
-              showMore ? "" : "line-clamp-2"
-            }  cursor-pointer break-keep text-sm leading-6`}
-            onClick={() => setShowMore(!showMore)}
+            className={`mt-5 
+              cursor-pointer break-keep text-sm leading-6`}
           >
-            안녕하세요! 저는 열정적인 미용사로, 고객들에게 아름다움과 자신감을
-            선사하는 것을 사명으로 삼고 있습니다. 새로운 트렌드와 기술에
-            끊임없이 열정을 쏟아, 최상의 서비스를 제공하고자 노력하고 있어요.
-            당신의 아름다움을 더 빛나게 해드릴 기회를 기대하고 있어요!
+            {userInfo.data.description}
           </div>
-          {!showMore && (
-            <div
-              className="mt-2 cursor-pointer text-center text-sm text-blue-500"
-              onClick={() => setShowMore(true)}
-            >
-              더보기
-            </div>
-          )}
+
           <div className="mt-7 flex space-x-3">
             <div
               className="flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-full border border-solid border-[#2D2D2D] text-sm font-bold text-[#2D2D2D]"
@@ -114,14 +122,30 @@ const Home = () => {
             >
               상담하기
             </div>
-            <div className="flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-full bg-[#2D2D2D] text-sm text-white">
+            <button
+              className={`flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-full ${
+                userInfo.data.naverPlace !== "" &&
+                userInfo.data.naverPlace !== null
+                  ? "bg-[#2D2D2D]"
+                  : "bg-gray-400"
+              } text-sm text-white`}
+              disabled={
+                userInfo.data.naverPlace === "" || !userInfo.data.naverPlace
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                if (userInfo.data?.naverPlace)
+                  void router.push(userInfo.data.naverPlace);
+              }}
+            >
               예약하기
-            </div>
+            </button>
           </div>
         </div>
+
         <div className="my-12">
           <div className="mb-4 text-lg font-bold">고객 리뷰</div>
-          <MainReviews />
+          <MainReviews id={router.query.id as string} />
           <div className="mb-4 mt-12 text-lg font-bold">시그니쳐 시술</div>
           <MainServices />
         </div>

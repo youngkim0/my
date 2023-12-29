@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import ConsultRequestMain from "./ConsultRequestMain";
 import ConsultRequestCheck from "./ConsultRequestCheck";
 import ConsultRequestRequest from "./ConsultRequestRequest";
+import Image from "next/image";
 
 export default function ConsultRequestModal({
   open,
@@ -12,6 +13,13 @@ export default function ConsultRequestModal({
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [page, setPage] = useState<string>("main");
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    phone: "",
+    clientID: "",
+    userID: "",
+  });
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[2000]" onClose={setOpen}>
@@ -40,19 +48,30 @@ export default function ConsultRequestModal({
             >
               <Dialog.Panel className="relative h-full w-full max-w-md transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:max-w-[400px]">
                 <div className="absolute right-0 top-0 mr-4 mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md bg-white px-2 py-2 text-sm font-semibold text-gray-400 hover:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    onClick={() => setOpen(false)}
-                  >
-                    <span>닫기</span>
+                  <button type="button" onClick={() => setOpen(false)}>
+                    <Image
+                      src="/images/i-close.png"
+                      alt=""
+                      width={30}
+                      height={30}
+                    />
                   </button>
                 </div>
 
-                {page === "main" && <ConsultRequestMain setPage={setPage} />}
-                {page === "check" && <ConsultRequestCheck setPage={setPage} />}
+                {page === "main" && (
+                  <ConsultRequestMain
+                    setPage={setPage}
+                    setUserInfo={setUserInfo}
+                  />
+                )}
+                {page === "check" && (
+                  <ConsultRequestCheck setPage={setPage} userInfo={userInfo} />
+                )}
                 {page === "request" && (
-                  <ConsultRequestRequest setPage={setPage} />
+                  <ConsultRequestRequest
+                    setPage={setPage}
+                    userInfo={userInfo}
+                  />
                 )}
               </Dialog.Panel>
             </Transition.Child>

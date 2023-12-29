@@ -51,14 +51,29 @@ export const accountRouter = createTRPCRouter({
       });
       return user ? user[0] : null;
     }),
+  checkExistingNickname: publicProcedure
+    .input(z.object({ nickname: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findMany({
+        where: {
+          nickname: input.nickname,
+        },
+      });
+      return user ? "true" : "false";
+    }),
   updateAccount: protectedProcedure
     .input(
       z.object({
         id: z.string(),
         name: z.string(),
+        naverPlace: z.string(),
         store: z.string(),
+        description: z.string(),
         image: z.string(),
         nickname: z.string(),
+        instagram: z.string(),
+        blog: z.string(),
+        youtube: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -69,8 +84,39 @@ export const accountRouter = createTRPCRouter({
         data: {
           name: input.name,
           store: input.store,
+          naverPlace: input.naverPlace,
           image: input.image,
           nickname: input.nickname,
+          description: input.description,
+          instagram: input.instagram,
+          blog: input.blog,
+          youtube: input.youtube,
+        },
+      });
+      return user;
+    }),
+  getAllReviews: publicProcedure
+    .input(z.object({ userID: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const userNickName = await ctx.db.user.findUnique({
+        where: {
+          kakaoID: input.userID,
+        },
+      });
+
+      const user = await ctx.db.clientReview.findMany({
+        where: {
+          userID: userNickName?.kakaoID,
+        },
+      });
+      return user;
+    }),
+  getReviewByID: publicProcedure
+    .input(z.object({ reviewID: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.clientReview.findUnique({
+        where: {
+          id: input.reviewID,
         },
       });
       return user;

@@ -20,14 +20,19 @@ model User {
     email         String?
     emailVerified DateTime?
     image         String?
-    nickname      String?
+    nickname      String
+    description   String?
     joinedAt      DateTime  @default(now())
     updatedAt     DateTime? @updatedAt
     expiresAt     DateTime?
-    name       String
-    store      String
-    Account Account[]
-    Session Session[]
+    instagram     String?
+    blog          String?
+    youtube       String?
+    naverPlace    String?
+    name          String
+    store         String
+    Account       Account[]
+    Session       Session[]
 }
 
 model Account {
@@ -64,17 +69,63 @@ model tokens {
 }
 
 model Clients {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
-    userID      String
-    name  String
-    age  Int?
-    gender String?
-    phone String?
-    lastVisit DateTime?
-    createdAt DateTime? @default(now())
-    updatedAt DateTime? @updatedAt
-    lastTreat String?
-    lastConsult String?
-
+    id              String   @id @default(auto()) @map("_id") @db.ObjectId
+    userID          String
+    phoneNumber     String
+    name            String
+    gender          String
+    birth           String
+    visitPath       String
+    hairThickness   String
+    hairType        String
+    hairFerm        String
+    hairDye         String
+    hairClinic      String
+    hairStyle       String
+    interestService String
+    scalpType       String
+    dandruff        String
+    hairLoss        String
+    sensitiveScalp  String
+    tensionScalp    String
+    memo            String
+    important       String[]
+    styleConcept    String[]
+    importantHair   String[]
 }
 
+model ClientMemo {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    clientID   String
+    userID     String
+    memo       String
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    
+}
+
+model ClientConsult {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    clientID   String
+    userID     String
+    front1    String
+    side1   String
+    front2  String
+    side2   String
+    memo       String
+    replied   Boolean @default(false)
+    reply      String
+    reviewed   Boolean @default(false)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
+
+model ClientReview {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    clientID   String
+    userID     String
+    review     String
+    image      String
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}

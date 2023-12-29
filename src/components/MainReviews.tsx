@@ -1,7 +1,20 @@
 import Carousel from "react-multi-carousel";
-import ReviewCard from "./ReviewCard";
 
-const MainReviews = () => {
+import { api } from "~/utils/api";
+import { useState } from "react";
+import ReviewModal from "./ReviewModal";
+import Image from "next/image";
+
+const MainReviews = ({ id }: { id: string }) => {
+  const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [detailID, setDetailID] = useState<string>("");
+
+  const reviewList = api.account.getAllReviews.useQuery({
+    userID: id,
+  });
+
+  if (!reviewList.data) return <></>;
+
   return (
     <Carousel
       additionalTransfrom={0}
@@ -82,9 +95,37 @@ const MainReviews = () => {
       slidesToSlide={1}
       swipeable
     >
-      <ReviewCard />
-      <ReviewCard />
-      <ReviewCard />
+      {reviewList.data?.map((review) => (
+        <>
+          {showDetail && (
+            <ReviewModal
+              open={showDetail}
+              setOpen={setShowDetail}
+              reviewID={detailID}
+            />
+          )}
+          <div
+            className="flex h-[96px] w-[300px] cursor-pointer flex-row rounded-2xl border border-solid border-gray-100 bg-white"
+            onClick={() => {
+              setDetailID(review.id);
+              setShowDetail(true);
+            }}
+          >
+            <div className="relative h-[96px] w-[101px]">
+              <Image
+                src={review.image}
+                alt="review"
+                fill
+                quality={100}
+                className=" rounded-l-2xl"
+              />
+            </div>
+            <div className="my-2 line-clamp-4 h-[70px] flex-1 px-2 leading-6 text-black">
+              <div className="py-2 text-xs">{review.review}</div>
+            </div>
+          </div>
+        </>
+      ))}
     </Carousel>
   );
 };

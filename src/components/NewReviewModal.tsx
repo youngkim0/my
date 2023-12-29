@@ -1,4 +1,12 @@
-import { Fragment, type SetStateAction, type Dispatch, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import {
+  Fragment,
+  type SetStateAction,
+  type Dispatch,
+  useState,
+  useRef,
+} from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import TextareaAutosize from "react-textarea-autosize";
@@ -6,7 +14,7 @@ import type { ClientConsult } from "@prisma/client";
 import { format } from "date-fns";
 import { api } from "~/utils/api";
 
-export default function ConsultModal({
+export default function NewReviewModal({
   open,
   setOpen,
   customerName,
@@ -18,13 +26,30 @@ export default function ConsultModal({
   consult: ClientConsult;
 }) {
   const [text, setText] = useState<string>("");
-  const util = api.useUtils();
 
-  const replyConsult = api.customer.replyCustomerConsult.useMutation({
-    onSuccess: async () => {
-      await util.customer.getCustomerConsultList.invalidate();
-    },
-  });
+  const [image, setImage] = useState<string>("");
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const addReview = api.customer.addNewReview.useMutation();
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const target = e.currentTarget;
+      const file = target.files![0];
+      const formData = new FormData();
+      formData.append("file", file!);
+      formData.append("upload_preset", "t3yt1oxa");
+      fetch("https://api.cloudinary.com/v1_1/dzxtjyhmk/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then(async (res) => {
+          setImage(res.secure_url);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -106,10 +131,46 @@ export default function ConsultModal({
                     </div>
                   </div>
                 </div>
+                <p className="mb-3 mt-5 text-base">디자이너 답변</p>
+
+                <div className="mb-3 rounded-md bg-[#ececec] px-3 py-3 text-sm">
+                  {consult.reply}
+                </div>
+                <p className="mb-3 mt-5 text-base">리뷰 작성</p>
+                <input
+                  type="file"
+                  hidden
+                  ref={fileRef}
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      handleImageChange(e);
+                    }
+                  }}
+                />
+                <div
+                  className="relative flex h-[150px] w-1/2 cursor-pointer flex-col items-center justify-center rounded-md bg-[#ececec]"
+                  onClick={() => {
+                    fileRef.current?.click();
+                  }}
+                >
+                  {image !== "" ? (
+                    <Image src={image} alt="" fill />
+                  ) : (
+                    <>
+                      <Image
+                        src="/images/i-add.png"
+                        alt=""
+                        width={50}
+                        height={50}
+                      />
+                      <span className="text-center">사진 첨부</span>
+                    </>
+                  )}
+                </div>
                 <TextareaAutosize
                   minRows={4}
                   className="mt-3 w-full resize-none rounded-md bg-[#ececec] px-3 py-3"
-                  placeholder="답변을 입력해주세요. "
+                  placeholder="리뷰를 입력해주세요. "
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                 />
@@ -118,9 +179,12 @@ export default function ConsultModal({
                     type="button"
                     className="mb-4 inline-flex w-full justify-center rounded-full bg-[#2d2d2d] px-3 py-3  text-sm text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     onClick={async () => {
-                      await replyConsult.mutateAsync({
+                      await addReview.mutateAsync({
+                        clientID: consult.clientID,
+                        userID: consult.userID,
                         consultID: consult.id,
-                        reply: text,
+                        review: text,
+                        image,
                       });
                       setOpen(false);
                     }}
