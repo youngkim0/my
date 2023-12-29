@@ -21,7 +21,7 @@ const config = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "fastly.picsum.photos",
+        hostname: "res.cloudinary.com",
         port: "",
         pathname: "/**",
       },

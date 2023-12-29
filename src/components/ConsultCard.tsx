@@ -14,23 +14,34 @@ const ConsultCard = ({ type }: { type: string }) => {
       )}
       <div
         className={`w-full cursor-pointer rounded-lg ${
-          type === "done" ? "bg-gray-500" : "bg-blue-900"
-        } px-4 py-3 text-sm text-white`}
+          type === "done" ? "bg-[#2d2d2d] text-white" : "bg-white text-black"
+        } relative flex flex-col space-y-1 px-4 py-3 text-sm`}
         onClick={() => setOpen(true)}
       >
+        <div
+          className={`absolute right-3 top-4 text-right ${
+            type === "done" ? "text-[#808DD0]" : "text-[#a2a2a2]"
+          }`}
+        >
+          <p className="mb-1">{type === "done" ? "답변완료" : "답변 대기중"}</p>
+          {type === "done" && "메모남기기"}
+        </div>
         <div className="flex space-x-2">
-          <span>강영식 남</span>
+          <span>강영식</span>
+          <span>|</span>
+          <span>남</span>
           <span>|</span>
           <span>32세</span>
           <span>|</span>
-          <span>상담시술: 컷</span>
         </div>
         <div className="flex space-x-2">
-          <span>최근방문일: 20일전</span>
+          <span>상담시술: 컷</span>
           <span>|</span>
           <span>최근시술: 펌</span>
         </div>
-        <div>{type === "done" ? "답변완료 / 메모 남기기" : "답변 대기중"}</div>
+        <div className="flex space-x-2">
+          <div>최근방문일: 20일전</div>
+        </div>
       </div>
     </>
   );

@@ -6,7 +6,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
-
+import CredentialsProvider from "next-auth/providers/credentials";
 import { env } from "~/env";
 import { db } from "~/server/db";
 
@@ -18,17 +18,24 @@ import { db } from "~/server/db";
  */
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: DefaultSession["user"] & {
+    user: {
       id: string;
+      kakaoID: string;
+      name?: string;
+
       // ...other properties
       // role: UserRole;
-    };
+    } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    id: string;
+    kakaoID: string;
+    name?: string;
+
+    // ...other properties
+    // role: UserRole;
+  }
 }
 
 /**
@@ -37,31 +44,73 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, ...user };
+    signIn({}) {
+      console.log("here");
+      return true;
+    },
+    jwt(params) {
+      if (params.user?.id) {
+        console.log(params);
+        params.token.id = params.user.id;
+        params.token.kakaoID = params.user.kakaoID;
+        params.token.name = params.user.kakaoID;
+      }
+      console.log("JWT", params.token);
+
+      return params.token;
     },
 
-    async session({ session, token }) {
-      session.user = token;
+    session({ session, token }) {
+      session.user.id = token.id as string;
+      if (token.name) session.user.name = token.name;
+      // if (token.kakaoID) session.user.kakaoID = token.kakaoID;
+      console.log("SESSION");
+
       return session;
     },
-    // session: ({ session, user }) => ({
-    //   ...session,
-    //   user: {
-    //     ...session.user,
-    //     id: user.id,
-    //   },
-    // }),
   },
   adapter: PrismaAdapter(db),
 
   providers: [
+    CredentialsProvider({
+      type: "credentials",
+      credentials: {},
+      async authorize(credentials) {
+        const { email } = credentials as {
+          email: string;
+        };
+
+        const user = await db.user.findUnique({
+          where: {
+            kakaoID: email,
+          },
+        });
+
+        return user;
+      },
+    }),
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
+    /**
+     * ...add more providers here.
+     *
+     * Most other providers require a bit more work than the Discord provider. For example, the
+     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
+     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
+     *
+     * @see https://next-auth.js.org/providers/github
+     */
   ],
+  pages: {
+    signIn: "/",
+  },
 };
 
 /**
