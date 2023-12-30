@@ -1,5 +1,6 @@
 import Carousel from "react-multi-carousel";
 import ServiceCard from "./ServiceCard";
+import Image from "next/image";
 
 const MainServices = () => {
   return (
@@ -81,6 +82,22 @@ const MainServices = () => {
       slidesToSlide={1}
       swipeable
     >
+      <>
+        <div className="flex h-[231px] w-[208px] cursor-pointer flex-col items-center justify-center rounded-xl border border-solid border-gray-100 bg-white">
+          <div className="relative h-[50px] w-[50px] ">
+            <Image
+              src="/images/i-add.png"
+              alt="review"
+              fill
+              quality={100}
+              className="rounded-t-xl"
+            />
+          </div>
+          <div className="line-clamp-4 px-2 py-2 leading-6 text-black">
+            <p className="px-2 py-1 text-left text-base font-bold">새로 추가</p>
+          </div>
+        </div>
+      </>
       <ServiceCard />
       <ServiceCard />
       <ServiceCard />
