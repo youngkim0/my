@@ -7,8 +7,8 @@ const Footer = () => {
         <Image src="/images/my-logo.png" alt="logo" width={42} height={33} />
       </div>
       <div className="flex flex-col space-y-1 text-xs">
-        <div>문의: contact@miyongin.com / 010-1234-9999</div>
-        <div className="text-gray-200">copyright 024 my-membership</div>
+        <div>문의: korhyek@naver.com </div>
+        <div className="text-gray-200">copyright 2024 my-membership</div>
       </div>
     </footer>
   );

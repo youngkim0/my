@@ -50,6 +50,12 @@ export default function Home() {
     }
   };
 
+  const onClick = async () => {
+    await signIn("kakao", {
+      callbackUrl: "/my",
+    });
+  };
+
   return (
     <div className="mx-auto flex min-h-[100vh] max-w-md flex-col items-center">
       <Image
