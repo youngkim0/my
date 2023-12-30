@@ -192,4 +192,36 @@ export const accountRouter = createTRPCRouter({
       });
       return user;
     }),
+  getAllServicesByID: publicProcedure
+    .input(z.object({ userID: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const userID = await ctx.db.user.findUnique({
+        where: {
+          id: input.userID,
+        },
+      });
+      if (!userID) throw new Error("User not found");
+      const user = await ctx.db.service.findMany({
+        where: {
+          userID: userID.nickname,
+        },
+      });
+      return user;
+    }),
+  getAllDesigners: publicProcedure
+    .input(z.object({}))
+    .query(async ({ ctx }) => {
+      const user = await ctx.db.user.findMany({});
+      return user;
+    }),
+  deleteAccount: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return user;
+    }),
 });

@@ -16,7 +16,7 @@ export const customerRouter = createTRPCRouter({
       });
       return user.length;
     }),
-    getCustomerNumerByNickname: publicProcedure
+  getCustomerNumerByNickname: publicProcedure
     .input(z.object({ nickname: z.string() }))
     .query(async ({ ctx, input }) => {
       const id = await ctx.db.user.findMany({
@@ -27,7 +27,6 @@ export const customerRouter = createTRPCRouter({
       const user = await ctx.db.clients.findMany({
         where: {
           userID: id[0]?.kakaoID,
-          
         },
       });
       return user.length;
@@ -41,6 +40,24 @@ export const customerRouter = createTRPCRouter({
         },
       });
       return user;
+    }),
+  getCustomerListByID: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const userID = await ctx.db.user.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+      if (userID) {
+        const user = await ctx.db.clients.findMany({
+          where: {
+            userID: userID.kakaoID,
+          },
+        });
+        return user;
+      }
+      return false;
     }),
   addNewCustomer: publicProcedure
     .input(
@@ -200,6 +217,24 @@ export const customerRouter = createTRPCRouter({
         },
       });
       return user;
+    }),
+  getCustomerConsultListByID: publicProcedure
+    .input(z.object({ userID: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const userID = await ctx.db.user.findUnique({
+        where: {
+          id: input.userID,
+        },
+      });
+      if (userID) {
+        const user = await ctx.db.clientConsult.findMany({
+          where: {
+            userID: userID.kakaoID,
+          },
+        });
+        return user;
+      }
+      return false;
     }),
   getCustomerConsultListForCustomer: publicProcedure
     .input(z.object({ userID: z.string(), clientID: z.string() }))

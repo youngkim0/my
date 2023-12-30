@@ -166,11 +166,11 @@ const Home = () => {
         <div className="my-12">
           <div className="mb-4 text-lg font-bold">고객 리뷰</div>
           <MainReviews id={router.query.id as string} />
-          <div className="mb-4 mt-12 flex flex-row space-x-8 text-lg font-bold">
+          <div className="mb-4 mt-12 flex flex-row items-center space-x-8 text-lg font-bold">
             <span>시그니쳐 시술</span>
             {session?.user.nickname === router.query.id && (
               <span
-                className="cursor-pointer font-semibold text-blue-700"
+                className="cursor-pointer text-sm font-semibold text-blue-700"
                 onClick={() => setOpenServiceModal(true)}
               >
                 새로 추가
