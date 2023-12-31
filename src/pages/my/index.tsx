@@ -19,6 +19,18 @@ const MyPage = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [searchedCustomer, setSearchedCustomer] = useState<Clients[]>([]);
 
+  const [customerFact, setCustomerFact] = useState<{
+    monthBirthday: number;
+    todayBirthday: number;
+    todayJoined: number;
+    monthJoined: number;
+  }>({
+    monthBirthday: 0,
+    todayBirthday: 0,
+    todayJoined: 0,
+    monthJoined: 0,
+  });
+
   const userInfo = api.account.getAccount.useQuery(
     {
       id: session?.user.name ? session?.user.name : "",
@@ -44,6 +56,44 @@ const MyPage = () => {
       enabled: !!session?.user.name,
       onSuccess: (data) => {
         setSearchedCustomer(data);
+        if (data) {
+          setCustomerFact({
+            monthBirthday: data.filter((a) => {
+              const today = new Date();
+              return today.getMonth() + 1 === parseInt(a.birth.slice(4, 6));
+            }).length,
+            todayBirthday: data.filter((a) => {
+              const today = new Date();
+              console.log(
+                a.birth.slice(4, 6),
+                today.getMonth(),
+                today.getDate(),
+              );
+
+              return (
+                today.getMonth() + 1 === parseInt(a.birth.slice(4, 6)) &&
+                today.getDate() === parseInt(a.birth.slice(6))
+              );
+            }).length,
+            todayJoined: data.filter((a) => {
+              const today = new Date();
+              const date = new Date(a.createdAt);
+              return (
+                today.getFullYear() === date.getFullYear() &&
+                today.getMonth() === date.getMonth() &&
+                today.getDate() === date.getDate()
+              );
+            }).length,
+            monthJoined: data.filter((a) => {
+              const today = new Date();
+              const date = new Date(a.createdAt);
+              return (
+                today.getFullYear() === date.getFullYear() &&
+                today.getMonth() === date.getMonth()
+              );
+            }).length,
+          });
+        }
       },
     },
   );
@@ -119,19 +169,27 @@ const MyPage = () => {
                 <p className="text-xs font-semibold text-black">고객관리</p>
                 <p>
                   🎂 이달 생일인 고객{" "}
-                  <span className="font-bold text-black">0명</span>
+                  <span className="font-bold text-black">
+                    {customerFact.monthBirthday}명
+                  </span>
                 </p>
                 <p>
                   ✍🏻 이달 등록된 고객{" "}
-                  <span className="font-bold text-black">0명</span>
+                  <span className="font-bold text-black">
+                    {customerFact.monthJoined}명
+                  </span>
                 </p>
                 <p>
                   🎉 오늘 생일인 고객{" "}
-                  <span className="font-bold text-black">0명</span>
+                  <span className="font-bold text-black">
+                    {customerFact.todayBirthday}명
+                  </span>
                 </p>
                 <p>
                   📝 오늘 등록된 고객{" "}
-                  <span className="font-bold text-black">0명</span>
+                  <span className="font-bold text-black">
+                    {customerFact.todayJoined}명
+                  </span>
                 </p>
               </div>
               <div className="flex w-1/2 flex-col space-y-2">

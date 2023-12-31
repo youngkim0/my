@@ -106,6 +106,11 @@ export default function ConsultModal({
                     </div>
                   </div>
                 </div>
+                <p className="my-3 text-base">상담 내용</p>
+
+                <div className="my-3 rounded-md bg-gray-200 px-3 py-3">
+                  {consult.memo}
+                </div>
                 <TextareaAutosize
                   minRows={4}
                   className="mt-3 w-full resize-none rounded-md bg-[#ececec] px-3 py-3"

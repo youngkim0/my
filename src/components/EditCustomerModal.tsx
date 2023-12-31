@@ -32,21 +32,23 @@ type FormCheckbox = {
   importantHair: string[];
 };
 
-export default function NewCustomerModal({
+export default function EditCustomerModal({
   open,
   setOpen,
+  customerID,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  customerID: string;
 }) {
+  const { data: session } = useSession();
   const util = api.useUtils();
-  const addNewCustomer = api.customer.addNewCustomer.useMutation({
+
+  const editCustomer = api.customer.editCustomer.useMutation({
     onSuccess: async () => {
-      await util.customer.getCustomerList.invalidate();
+      await util.customer.getCustomerInfo.invalidate();
     },
   });
-  const { data: session } = useSession();
-
   const [form, setForm] = useState<Form>({
     name: "",
     gender: "남",
@@ -60,7 +62,6 @@ export default function NewCustomerModal({
     hairClinic: "",
     hairStyle: "",
     interestService: "",
-
     scalpType: "",
     dandruff: "",
     hairLoss: "",
@@ -68,15 +69,54 @@ export default function NewCustomerModal({
     tensionScalp: "",
     memo: "",
   });
+
   const [formCheckbox, setFormCheckbox] = useState<FormCheckbox>({
     important: [],
     styleConcept: [],
     importantHair: [],
   });
 
+  const customerInfo = api.customer.getCustomerInfo.useQuery(
+    {
+      id: customerID,
+    },
+    {
+      enabled: !!customerID,
+      onSuccess: (data) => {
+        if (data) {
+          setForm({
+            name: data.name,
+            gender: data.gender,
+            phoneNumber: data.phoneNumber,
+            birth: data.birth,
+            visitPath: data.visitPath,
+            hairThickness: data.hairThickness,
+            hairType: data.hairType,
+            hairFerm: data.hairFerm,
+            hairDye: data.hairDye,
+            hairClinic: data.hairClinic,
+            hairStyle: data.hairStyle,
+            interestService: data.interestService,
+            scalpType: data.scalpType,
+            dandruff: data.dandruff,
+            hairLoss: data.hairLoss,
+            sensitiveScalp: data.sensitiveScalp,
+            tensionScalp: data.tensionScalp,
+            memo: data.memo,
+          });
+          setFormCheckbox({
+            important: data.important,
+            styleConcept: data.styleConcept,
+            importantHair: data.importantHair,
+          });
+        }
+      },
+    },
+  );
+
   const handleSubmit = async () => {
-    await addNewCustomer.mutateAsync({
-      userID: session?.user.name ?? "",
+    await editCustomer.mutateAsync({
+      customerID,
       name: form.name,
       phoneNumber: form.phoneNumber,
       gender: form.gender,
@@ -390,7 +430,7 @@ const RadioGroup = ({
       <div className="mt-4 text-base font-semibold">{title}</div>
       <fieldset className="mt-2">
         <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             {items.slice(0, 5).map((item) => (
               <Fragment key={item}>
                 <input
@@ -407,14 +447,14 @@ const RadioGroup = ({
                 />
                 <label
                   htmlFor="thickness"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-xs font-medium leading-6 text-gray-900"
                 >
                   {item}
                 </label>
               </Fragment>
             ))}
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             {items.slice(5, 10).map((item) => (
               <Fragment key={item}>
                 <input
@@ -431,7 +471,7 @@ const RadioGroup = ({
                 />
                 <label
                   htmlFor="thickness"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-xs font-medium leading-6 text-gray-900"
                 >
                   {item}
                 </label>
@@ -485,7 +525,7 @@ const CheckGroup = ({
                 />
                 <label
                   htmlFor={item}
-                  className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                  className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                 >
                   {item}
                 </label>
@@ -516,7 +556,7 @@ const CheckGroup = ({
                   />
                   <label
                     htmlFor={item}
-                    className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                    className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                   >
                     {item}
                   </label>
@@ -548,7 +588,7 @@ const CheckGroup = ({
                   />
                   <label
                     htmlFor={item}
-                    className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                    className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                   >
                     {item}
                   </label>
@@ -580,7 +620,7 @@ const CheckGroup = ({
                   />
                   <label
                     htmlFor={title}
-                    className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                    className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                   >
                     {item}
                   </label>
@@ -612,7 +652,7 @@ const CheckGroup = ({
                   />
                   <label
                     htmlFor={title}
-                    className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                    className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                   >
                     {item}
                   </label>
