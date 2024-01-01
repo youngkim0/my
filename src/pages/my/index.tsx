@@ -64,12 +64,6 @@ const MyPage = () => {
             }).length,
             todayBirthday: data.filter((a) => {
               const today = new Date();
-              console.log(
-                a.birth.slice(4, 6),
-                today.getMonth(),
-                today.getDate(),
-              );
-
               return (
                 today.getMonth() + 1 === parseInt(a.birth.slice(4, 6)) &&
                 today.getDate() === parseInt(a.birth.slice(6))
@@ -238,8 +232,10 @@ const MyPage = () => {
                 }
                 setSearched(true);
                 setSearchedCustomer(
-                  customerList.data!.filter((customer) =>
-                    customer.name.includes(searchText),
+                  customerList.data!.filter(
+                    (customer) =>
+                      customer.name.includes(searchText) ||
+                      customer.phoneNumber.includes(searchText),
                   ),
                 );
               }}
