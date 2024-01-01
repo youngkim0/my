@@ -67,7 +67,7 @@ const ConsultRequestMain = ({
         </button>
         <button
           type="button"
-          className="inline-flex w-1/2 justify-center rounded-full bg-[#808DD0] px-3 py-3 text-sm  text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
+          className="inline-flex w-1/2 justify-center rounded-full border border-solid border-[#2d2d2d] px-3 py-3 text-sm font-semibold text-[#2d2d2d]"
           onClick={async () => {
             const check = await checkCustomer.mutateAsync({
               name,

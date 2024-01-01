@@ -113,6 +113,7 @@ const MyPage = () => {
     }
   }, [userInfo.data]);
 
+
   if (!userInfo.data) return <></>;
 
   return (
@@ -131,11 +132,19 @@ const MyPage = () => {
         <div className="mt-10 px-6">
           <div className="mb-3 font-bold">마이페이지</div>
           <div className="relative rounded-xl bg-white px-5 py-5">
-            <Link href="/my/edit">
-              <span className="absolute right-4 top-3 cursor-pointer text-sm text-blue-800">
-                수정하기
-              </span>
-            </Link>
+            <div
+              className="absolute right-4 top-3 cursor-pointer text-sm text-blue-800"
+              onClick={() => void router.push("/my/edit")}
+            >
+              수정하기
+            </div>
+            <div
+              className="absolute right-4 top-10 cursor-pointer text-sm text-blue-800"
+              onClick={() => void router.push(`/${session?.user.nickname}`)}
+            >
+              프로필 페이지
+            </div>
+
             <div className="flex flex-row items-center space-x-5">
               <Image
                 src={userInfo.data.image ? userInfo.data.image : ""}
@@ -144,7 +153,7 @@ const MyPage = () => {
                 height={100}
                 className="rounded-full"
               />
-              <div className="relative w-full">
+              <div className="relative">
                 <p className="text-base">{userInfo.data.name}</p>
                 <p className="pt-1 text-xs text-[#A3A3A3]">
                   {userInfo.data.store}
@@ -274,14 +283,6 @@ const MyPage = () => {
                   답변 완료:{" "}
                   <span className="font-bold text-black">
                     {consultList.data?.filter((a) => a.replied).length}/
-                    {consultList.data?.length}건
-                  </span>
-                </span>
-                <span>|</span>
-                <span>
-                  미답변:{" "}
-                  <span className="font-bold text-black">
-                    {consultList.data?.filter((a) => !a.replied).length}/
                     {consultList.data?.length}건
                   </span>
                 </span>

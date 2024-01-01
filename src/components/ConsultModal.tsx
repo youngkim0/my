@@ -26,6 +26,8 @@ export default function ConsultModal({
     },
   });
 
+  console.log(consult);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[2000]" onClose={setOpen}>
@@ -69,7 +71,11 @@ export default function ConsultModal({
                   <div className="flex flex-row space-x-3">
                     <div className="relative h-52 w-52">
                       <Image
-                        src={consult.front1}
+                        src={
+                          consult.front1 !== ""
+                            ? consult.front1
+                            : "/images/no-image.jpg"
+                        }
                         alt="consult"
                         quality={100}
                         fill
@@ -77,7 +83,11 @@ export default function ConsultModal({
                     </div>
                     <div className="relative h-52 w-52">
                       <Image
-                        src={consult.side1}
+                        src={
+                          consult.side1 !== ""
+                            ? consult.side1
+                            : "/images/no-image.jpg"
+                        }
                         alt="consult"
                         quality={100}
                         fill
@@ -90,7 +100,11 @@ export default function ConsultModal({
                   <div className="flex flex-row space-x-3">
                     <div className="relative h-52 w-52">
                       <Image
-                        src={consult.front2}
+                        src={
+                          consult.front2 !== ""
+                            ? consult.front2
+                            : "/images/no-image.jpg"
+                        }
                         alt="consult"
                         quality={100}
                         fill
@@ -98,7 +112,11 @@ export default function ConsultModal({
                     </div>
                     <div className="relative h-52 w-52">
                       <Image
-                        src={consult.side2}
+                        src={
+                          consult.side2 !== ""
+                            ? consult.side2
+                            : "/images/no-image.jpg"
+                        }
                         alt="consult"
                         quality={100}
                         fill
