@@ -47,6 +47,8 @@ const MyPage = () => {
           });
       },
       enabled: !!session?.user.name,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -170,10 +172,15 @@ const MyPage = () => {
                 width={100}
                 height={100}
                 className="rounded-full"
+              />
+              <div
+                className="mt-3 -translate-x-3 text-xs text-blue-700"
                 onClick={() => {
                   inputRef.current?.click();
                 }}
-              />
+              >
+                프로필 사진 등록/수정
+              </div>
               <div className="relative mt-10 flex w-full flex-col space-y-5 pr-10">
                 <div className="flex flex-col space-y-2">
                   <p className="text-xs font-semibold text-black">아이디</p>
