@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -46,7 +47,6 @@ const Home = () => {
     },
   );
 
-
   if (!userInfo.data || !serviceList.data) return <></>;
 
   return (
@@ -78,44 +78,53 @@ const Home = () => {
         </div> */}
         <div className="relative rounded-xl bg-white px-5 py-5">
           <div className="flex flex-row items-center space-x-5">
-            <Image
-              src={userInfo.data.image!}
-              alt=""
-              width={100}
-              height={100}
-              className="rounded-full"
-            />
-            <div className="relative w-full">
+            <div
+              style={{ backgroundImage: `url(${userInfo.data.image})` }}
+              className="h-[100px] w-[100px] rounded-full bg-cover bg-center"
+            ></div>
+
+            <div className="relative ">
               <p className="text-lg">{userInfo.data.name}</p>
               <p className="pt-1 text-sm text-[#A3A3A3]">
                 {userInfo.data.store}
               </p>
-              <div className="mt-3 flex flex-row">
+              <div className="mt-3 flex flex-row items-center">
                 {userInfo.data.instagram && (
                   <Link
-                    className="relative h-7 w-9"
+                    className="relative h-9 w-9"
                     href={userInfo.data.instagram}
                     target="_blank"
                   >
                     <Image src="/images/instagram.png" fill alt="instagram" />
                   </Link>
                 )}
-                {userInfo.data.blog && (
-                  <Link
-                    className="relative ml-3 h-7 w-7"
-                    href={userInfo.data.blog}
-                    target="_blank"
-                  >
-                    <Image src="/images/blog.png" fill alt="blog" />
-                  </Link>
-                )}
                 {userInfo.data.youtube && (
                   <Link
-                    className="relative ml-4 h-7 w-7"
+                    className="relative ml-4 h-5 w-7"
                     href={userInfo.data.youtube}
                     target="_blank"
                   >
-                    <Image src="/images/youtube2.png" fill alt="youtube" />
+                    <Image
+                      src="/images/youtube2.png"
+                      fill
+                      alt="youtube"
+                      unoptimized={true}
+                    />
+                  </Link>
+                )}
+                {userInfo.data.blog && (
+                  <Link
+                    className="relative ml-4 h-7 w-8"
+                    href={userInfo.data.blog}
+                    target="_blank"
+                  >
+                    <Image
+                      src="/images/blog.png"
+                      fill
+                      alt="blog"
+                      quality={100}
+                      unoptimized={true}
+                    />
                   </Link>
                 )}
               </div>
@@ -128,15 +137,15 @@ const Home = () => {
             {userInfo.data.description}
           </div>
 
-          <div className="mt-7 flex space-x-3">
+          <div className="mb-2 mt-7 flex space-x-3">
             <div
-              className="flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-full border border-solid border-[#2D2D2D] text-sm font-bold text-[#2D2D2D]"
+              className="flex h-12 w-1/2 cursor-pointer items-center justify-center rounded-full border border-solid border-[#2D2D2D] text-sm font-bold text-[#2D2D2D]"
               onClick={() => setConsultRequestModal(true)}
             >
               상담하기
             </div>
             <button
-              className={`flex h-10 w-1/2 cursor-pointer items-center justify-center rounded-full ${
+              className={`flex h-12 w-1/2 cursor-pointer items-center justify-center rounded-full ${
                 userInfo.data.naverPlace !== "" &&
                 userInfo.data.naverPlace !== null
                   ? "bg-[#2D2D2D]"

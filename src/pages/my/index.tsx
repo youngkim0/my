@@ -146,13 +146,21 @@ const MyPage = () => {
             </div>
 
             <div className="flex flex-row items-center space-x-5">
-              <Image
+              <div
+                style={{
+                  backgroundImage: userInfo.data.image
+                    ? `url(${userInfo.data.image})`
+                    : `url("/images/avatar.png")`,
+                }}
+                className="h-[100px] w-[100px] rounded-full bg-cover bg-center"
+              ></div>
+              {/* <Image
                 src={userInfo.data.image ? userInfo.data.image : ""}
                 alt=""
                 width={100}
                 height={100}
                 className="rounded-full"
-              />
+              /> */}
               <div className="relative">
                 <p className="text-base">{userInfo.data.name}</p>
                 <p className="pt-1 text-xs text-[#A3A3A3]">

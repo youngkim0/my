@@ -160,7 +160,18 @@ const MyPage = () => {
                   }
                 }}
               />
-              <Image
+              <div
+                style={{
+                  backgroundImage:
+                    form.image !== ""
+                      ? `url(${form.image})`
+                      : userInfo.data.image
+                        ? `url(${userInfo.data.image})`
+                        : "/images/avatar.png",
+                }}
+                className="h-[100px] w-[100px] rounded-full bg-cover bg-center"
+              ></div>
+              {/* <Image
                 src={
                   form.image !== ""
                     ? form.image
@@ -172,7 +183,7 @@ const MyPage = () => {
                 width={100}
                 height={100}
                 className="rounded-full"
-              />
+              /> */}
               <div
                 className="mt-3 -translate-x-3 text-xs text-blue-700"
                 onClick={() => {
