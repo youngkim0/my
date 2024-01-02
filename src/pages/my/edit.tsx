@@ -196,7 +196,9 @@ const MyPage = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <p className="text-xs font-semibold text-black">이름</p>
+                  <p className="text-xs font-semibold text-black">
+                    디자이너/직급
+                  </p>
                   <input
                     className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"
                     value={form.name}
@@ -206,7 +208,9 @@ const MyPage = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <p className="text-xs font-semibold text-black">가게명</p>
+                  <p className="text-xs font-semibold text-black">
+                    현재 매장명
+                  </p>
                   <input
                     className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"
                     value={form.store}
@@ -216,7 +220,7 @@ const MyPage = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <p className="text-xs font-semibold text-black">설명</p>
+                  <p className="text-xs font-semibold text-black">자기소개</p>
                   <TextareaAutosize
                     minRows={3}
                     className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"
