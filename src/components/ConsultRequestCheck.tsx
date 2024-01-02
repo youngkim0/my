@@ -71,14 +71,14 @@ const ConsultRequestCheck = ({
       <div className="mt-4 flex flex-row space-x-3">
         <button
           type="button"
-          className="inline-flex w-1/2 justify-center rounded-full bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="inline-flex w-1/2 justify-center rounded-full bg-gray-800 px-3 py-3 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           onClick={() => setPage("main")}
         >
           뒤로가기
         </button>
         <button
           type="button"
-          className="inline-flex w-1/2 justify-center rounded-full bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="inline-flex w-1/2 justify-center rounded-full border border-solid border-[#2d2d2d] px-3 py-3 text-sm font-semibold text-[#2d2d2d]"
           onClick={() => setPage("request")}
         >
           상담신청

@@ -3,15 +3,30 @@ import { api } from "~/utils/api";
 import { useState } from "react";
 import { format } from "date-fns";
 import Footer from "~/components/Footer";
+import type { Clients } from "@prisma/client";
+import Image from "next/image";
+import EditCustomerModal from "~/components/EditCustomerModal";
 
 const Admin = () => {
   const [clickedID, setClickedID] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>("");
+  const [searchedCustomer, setSearchedCustomer] = useState<Clients[]>([]);
+  const [searched, setSearched] = useState<boolean>(false);
+  const [clickedCustomer, setClickedCustomer] = useState<string>("");
+  const [openEditCustomer, setOpenEditCustomer] = useState<boolean>(false);
+
   const util = api.useUtils();
 
   const deleteDesigner = api.account.deleteAccount.useMutation({
     onSuccess: async () => {
       alert("디자이너를 삭제했습니다.");
       await util.account.getAllDesigners.invalidate();
+    },
+  });
+  const deleteReview = api.customer.deleteReview.useMutation({
+    onSuccess: async () => {
+      alert("리뷰를 삭제했습니다.");
+      await util.customer.getReviewsByID.invalidate();
     },
   });
   const designerList = api.account.getAllDesigners.useQuery({});
@@ -21,6 +36,10 @@ const Admin = () => {
     },
     {
       enabled: clickedID !== "",
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        if (data) setSearchedCustomer(data);
+      },
     },
   );
   const consultList = api.customer.getCustomerConsultListByID.useQuery(
@@ -39,10 +58,26 @@ const Admin = () => {
       enabled: clickedID !== "",
     },
   );
+  const reviewList = api.customer.getReviewsByID.useQuery(
+    {
+      userID: clickedID,
+    },
+    {
+      enabled: clickedID !== "",
+    },
+  );
 
   if (!designerList.data) return <></>;
   return (
     <div className="flex min-h-screen flex-col">
+      {openEditCustomer && (
+        <EditCustomerModal
+          open={openEditCustomer}
+          setOpen={setOpenEditCustomer}
+          customerID={clickedCustomer}
+        />
+      )}
+
       <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <h3 className="text-base font-semibold leading-6 text-gray-900">
           디자이너 관리
@@ -176,10 +211,55 @@ const Admin = () => {
                       <dt className="text-sm font-medium leading-6 text-gray-900">
                         고객목록
                       </dt>
+                      <div className="relative mt-8 flex space-x-2">
+                        <input
+                          type="text"
+                          className="focus:shadow-outline h-9 w-full rounded-lg border px-3 text-base text-gray-700 placeholder-gray-300
+              placeholder:text-xs"
+                          placeholder="고객명을 입력해주세요"
+                          value={searchText}
+                          onChange={(e) => setSearchText(e.target.value)}
+                        />
+                        <Image
+                          src={
+                            !searched
+                              ? "/images/i-search.png"
+                              : "/images/i-close.png"
+                          }
+                          alt="search"
+                          width={20}
+                          height={20}
+                          className="absolute right-3 top-2"
+                          onClick={() => {
+                            if (searched) {
+                              setSearched(false);
+                              setSearchText("");
+                              if (customerList.data)
+                                setSearchedCustomer(customerList.data);
+                              return;
+                            }
+                            setSearched(true);
+                            if (customerList.data)
+                              setSearchedCustomer(
+                                customerList.data.filter(
+                                  (customer) =>
+                                    customer.name.includes(searchText) ||
+                                    customer.phoneNumber.includes(searchText),
+                                ),
+                              );
+                          }}
+                        />
+                      </div>
                       <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                        {customerList.data.map((customer) => (
+                        {searchedCustomer.map((customer) => (
                           <div className="mt-4">
-                            <div className="flex items-center gap-x-2 text-blue-800">
+                            <div
+                              className="flex cursor-pointer items-center gap-x-2 text-blue-800"
+                              onClick={() => {
+                                setOpenEditCustomer(true);
+                                setClickedCustomer(customer.id);
+                              }}
+                            >
                               <p>{customer.name}</p>
                               <p>{customer.phoneNumber}</p>
                               <p>{customer.gender}</p>
@@ -199,6 +279,50 @@ const Admin = () => {
                                           <p>{consult.memo}</p>
                                           <p>답변내용</p>
                                           <p>{consult.reply}</p>
+                                        </div>
+                                      ))}
+                                  </div>
+                                </>
+                              )}
+                            {reviewList.data &&
+                              reviewList.data.filter(
+                                (a) => a.clientID === customer.id,
+                              ).length !== 0 && (
+                                <>
+                                  <p className="mt-3 text-gray-500">리뷰내역</p>
+                                  <div className="flex flex-col gap-y-1">
+                                    {reviewList.data
+
+                                      .filter((a) => a.clientID === customer.id)
+                                      .map((review) => (
+                                        <div
+                                          className="relative rounded-md bg-white px-3 py-3"
+                                          id={review.id}
+                                        >
+                                          <img
+                                            src={review.image}
+                                            alt=""
+                                            className="mb-3 h-20 w-20 rounded-md"
+                                          />
+                                          <p>리뷰내용</p>
+                                          <p>{review.review}</p>
+                                          <p>작성일</p>
+                                          <p>
+                                            {format(
+                                              new Date(review.createdAt),
+                                              "yyyy-MM-dd",
+                                            )}
+                                          </p>
+                                          <div
+                                            className="absolute right-3 top-3 cursor-pointer text-red-800"
+                                            onClick={async () => {
+                                              await deleteReview.mutateAsync({
+                                                reviewID: review.id,
+                                              });
+                                            }}
+                                          >
+                                            리뷰삭제
+                                          </div>
                                         </div>
                                       ))}
                                   </div>

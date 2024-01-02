@@ -364,4 +364,31 @@ export const customerRouter = createTRPCRouter({
 
       return true;
     }),
+  getReviewsByID: publicProcedure
+    .input(z.object({ userID: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const userID = await ctx.db.user.findUnique({
+        where: {
+          id: input.userID,
+        },
+      });
+      if (!userID) return false;
+      const user = await ctx.db.clientReview.findMany({
+        where: {
+          userID: userID.kakaoID,
+        },
+      });
+      return user;
+    }),
+
+  deleteReview: publicProcedure
+    .input(z.object({ reviewID: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.clientReview.delete({
+        where: {
+          id: input.reviewID,
+        },
+      });
+      return true;
+    }),
 });
