@@ -118,9 +118,9 @@ const ConsultRequestRequest = ({
 
       <div className="mt-6">
         <p className="mb-3 text-base font-bold">현재 스타일</p>
-        <div className="flex flex-row space-x-3 pr-4">
+        <div className="flex flex-row justify-evenly space-x-3 ">
           <div
-            className="relative flex h-[150px] w-1/2 cursor-pointer flex-col items-center justify-center rounded-md bg-[#ececec]"
+            className="relative flex h-[150px] w-full cursor-pointer flex-col items-center justify-center rounded-md bg-[#ececec]"
             onClick={() => {
               front1Ref.current?.click();
             }}
@@ -135,7 +135,7 @@ const ConsultRequestRequest = ({
             )}
           </div>
           <div
-            className="relative flex h-[150px] w-1/2 cursor-pointer flex-col items-center justify-center rounded-md bg-[#ececec]"
+            className="relative flex h-[150px] w-full cursor-pointer flex-col items-center justify-center rounded-md bg-[#ececec]"
             onClick={() => {
               side1Ref.current?.click();
             }}
@@ -153,7 +153,7 @@ const ConsultRequestRequest = ({
       </div>
       <div>
         <p className="my-3 text-base font-bold">원하시는 스타일</p>
-        <div className="flex flex-row items-center space-x-3 pr-4">
+        <div className="flex flex-row items-center space-x-3 ">
           <div
             className="relative flex h-[150px] w-1/2 cursor-pointer flex-col items-center justify-center rounded-md bg-[#ececec]"
             onClick={() => {
@@ -196,7 +196,7 @@ const ConsultRequestRequest = ({
       <div className="mt-4">
         <button
           type="button"
-          className="inline-flex w-full justify-center rounded-full bg-[#2D2D2D] px-3 py-4 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="flex h-[47px] w-full items-center justify-center rounded-full bg-[#2D2D2D] px-3 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
           onClick={async () => {
             await addNewConsult.mutateAsync({
               customerID: userInfo.clientID,
@@ -218,14 +218,14 @@ const ConsultRequestRequest = ({
       <div className="mt-4 flex flex-row space-x-3">
         <button
           type="button"
-          className="inline-flex w-1/2 justify-center rounded-full  border border-solid border-[#2d2d2d] px-3 py-3 text-sm font-semibold text-[#2d2d2d] shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="flex h-[47px] w-1/2 items-center justify-center rounded-full  border border-solid border-[#2d2d2d] px-3 py-3 text-sm font-semibold text-[#2d2d2d] shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           onClick={() => setPage("main")}
         >
           뒤로가기
         </button>
         <button
           type="button"
-          className="inline-flex w-1/2 justify-center rounded-full border border-solid border-[#2d2d2d] px-3 py-3 text-sm font-semibold text-[#2d2d2d]"
+          className="flex h-[47px] w-1/2 items-center justify-center rounded-full bg-[#808DD0] px-3 py-3 text-sm font-semibold text-white"
           onClick={() => setPage("check")}
         >
           상담확인

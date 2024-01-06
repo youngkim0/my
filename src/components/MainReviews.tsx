@@ -3,7 +3,7 @@ import Carousel from "react-multi-carousel";
 import { api } from "~/utils/api";
 import { useState } from "react";
 import ReviewModal from "./ReviewModal";
-import Image from "next/image";
+
 
 const MainReviews = ({ id }: { id: string }) => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -105,21 +105,20 @@ const MainReviews = ({ id }: { id: string }) => {
             />
           )}
           <div
-            className="flex h-[96px] w-[300px] cursor-pointer flex-row rounded-2xl border border-solid border-gray-100 bg-white"
+            className="flex h-[96px] w-[298px] cursor-pointer flex-row rounded-xl border border-solid border-gray-100 bg-white"
             onClick={() => {
               setDetailID(review.id);
               setShowDetail(true);
             }}
           >
-            <div className="relative h-[96px] w-[101px]">
-              <Image
-                src={review.image}
-                alt="review"
-                fill
-                quality={100}
-                className=" rounded-l-2xl"
-              />
-            </div>
+            <div
+              className="h-[96px] w-[101px] rounded-l-xl"
+              style={{
+                backgroundImage: `url(${review.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            ></div>
             <div className="my-2 line-clamp-4 h-[70px] flex-1 px-2 leading-6 text-black">
               <div className="py-2 text-xs">{review.review}</div>
             </div>

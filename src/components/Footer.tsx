@@ -22,11 +22,11 @@ const Footer = () => {
         />
       )}
       <div>
-        <Image src="/images/my-logo.png" alt="logo" width={70} height={60} />
+        <Image src="/images/my-logo.png" alt="logo" width={42} height={33} />
       </div>
-      <div className="flex flex-col space-y-1 text-xs">
+      <div className="relative flex flex-col space-y-1 text-xs">
         <div>문의: korhyek@naver.com </div>
-        <div>
+        <div className="absolute bottom-1 right-2">
           <span onClick={() => setOpenServiceModal(true)}>이용약관</span>
           <span className="px-2">|</span>
           <span onClick={() => setOpenPrivacyModal(true)}>

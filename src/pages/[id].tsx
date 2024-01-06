@@ -71,81 +71,67 @@ const Home = () => {
         </div>
       )}
 
-      <div className="mb-5 mt-12 px-6 font-bold">프로필</div>
-      <div className="px-6">
+      <div className="mb-3 mt-12 px-6 font-bold">프로필</div>
+      <div className="px-[26px]">
         {/* <div className="mt-16 cursor-pointer text-end text-sm text-blue-700">
           <Link href="/my">마이페이지</Link>
         </div> */}
-        <div className="relative rounded-xl bg-white px-5 py-5">
-          <div className="flex flex-row items-center space-x-5">
+        <div className="relative rounded-xl bg-white px-[21px] py-[24px]">
+          <div className="flex flex-row  space-x-5">
             <div
               style={{ backgroundImage: `url(${userInfo.data.image})` }}
-              className="h-[100px] w-[100px] rounded-full bg-cover bg-center"
+              className="h-[80px] w-[80px] rounded-full bg-cover bg-center"
             ></div>
 
             <div className="relative ">
-              <p className="text-lg">{userInfo.data.name}</p>
-              <p className="pt-1 text-sm text-[#A3A3A3]">
+              <p className="text-base font-semibold">{userInfo.data.name}</p>
+              <p className="pt-[5px] text-sm text-[#A3A3A3]">
                 {userInfo.data.store}
               </p>
-              <div className="mt-3 flex flex-row items-center">
+              <div className="mt-[10px] flex flex-row items-center">
                 {userInfo.data.instagram && (
-                  <Link
-                    className="relative h-9 w-9"
-                    href={userInfo.data.instagram}
-                    target="_blank"
-                  >
-                    <Image src="/images/instagram.png" fill alt="instagram" />
-                  </Link>
+                  <div
+                    className="relative ml-1 h-[18.8px] w-[18.8px] cursor-pointer bg-[url('/images/instagram.svg')] bg-cover bg-center"
+                    onClick={() => {
+                      window.open(userInfo.data!.instagram!, "_blank");
+                    }}
+                  ></div>
                 )}
                 {userInfo.data.youtube && (
-                  <Link
-                    className="relative ml-4 h-5 w-7"
-                    href={userInfo.data.youtube}
-                    target="_blank"
-                  >
-                    <Image
-                      src="/images/youtube2.png"
-                      fill
-                      alt="youtube"
-                      unoptimized={true}
-                    />
-                  </Link>
+                  <div
+                    className="relative ml-4 h-[12.5px] w-[17.7px] cursor-pointer bg-[url('/images/youtube.svg')] bg-cover bg-center"
+                    onClick={() => {
+                      window.open(userInfo.data!.youtube!, "_blank");
+                    }}
+                  ></div>
                 )}
                 {userInfo.data.blog && (
-                  <Link
-                    className="relative ml-4 h-7 w-8"
-                    href={userInfo.data.blog}
-                    target="_blank"
-                  >
-                    <Image
-                      src="/images/blog.png"
-                      fill
-                      alt="blog"
-                      quality={100}
-                      unoptimized={true}
-                    />
-                  </Link>
+                  <div
+                    className="relative ml-3 h-[29px] w-[29px] cursor-pointer bg-[url('/images/blog.svg')] bg-cover bg-center"
+                    onClick={() => {
+                      window.open(userInfo.data!.blog!, "_blank");
+                    }}
+                  ></div>
                 )}
               </div>
             </div>
           </div>
           <div
-            className={`mt-5 
-              cursor-pointer break-keep text-sm leading-6`}
+            className={`cursor-pointer 
+              break-keep pt-[18px] text-sm leading-6`}
           >
             {userInfo.data.description}
           </div>
 
-          <div className="mb-2 mt-7 flex space-x-3">
+          <div className="mb-2 mt-[23px] flex space-x-3">
             <div
-              className="flex h-12 w-1/2 cursor-pointer items-center justify-center rounded-full border border-solid border-[#2D2D2D] text-sm font-bold text-[#2D2D2D]"
+              className="flex h-[47px] w-1/2 cursor-pointer items-center justify-center rounded-full border border-solid border-[#2D2D2D] text-sm font-bold text-[#2D2D2D]"
               onClick={() => setConsultRequestModal(true)}
             >
               상담하기
             </div>
             <button
-              className={`flex h-12 w-1/2 cursor-pointer items-center justify-center rounded-full ${
+              className={`flex h-[47px] w-1/2 cursor-pointer items-center justify-center rounded-full font-bold ${
                 userInfo.data.naverPlace !== "" &&
                 userInfo.data.naverPlace !== null
                   ? "bg-[#2D2D2D]"
@@ -173,9 +159,9 @@ const Home = () => {
           />
         )}
         <div className="my-12">
-          <div className="mb-4 text-lg font-bold">고객 리뷰</div>
+          <div className="mb-1 text-base font-bold">고객 리뷰</div>
           <MainReviews id={router.query.id as string} />
-          <div className="mb-4 mt-12 flex flex-row items-center space-x-8 text-lg font-bold">
+          <div className="mb-1 mt-12 flex flex-row items-center space-x-8 text-base font-bold">
             <span>시그니쳐 시술</span>
             {session?.user.nickname === router.query.id && (
               <span

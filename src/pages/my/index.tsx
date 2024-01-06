@@ -152,7 +152,7 @@ const MyPage = () => {
                     ? `url(${userInfo.data.image})`
                     : `url("/images/avatar.png")`,
                 }}
-                className="h-[100px] w-[100px] rounded-full bg-cover bg-center"
+                className="h-[80px] w-[80px] rounded-full bg-cover bg-center"
               ></div>
               {/* <Image
                 src={userInfo.data.image ? userInfo.data.image : ""}
@@ -178,8 +178,8 @@ const MyPage = () => {
             <div className="mt-6 flex flex-row space-x-3 text-xs text-[#a3a3a3]">
               <div className="flex w-1/2 flex-col space-y-2">
                 <p className="text-xs font-semibold text-black">고객관리</p>
-                <p>
-                  🎂 이달 생일인 고객{" "}
+                <p style={{ fontWeight: 400 }}>
+                  <span>🎂 이달 생일인 고객 </span>
                   <span className="font-bold text-black">
                     {customerFact.monthBirthday}명
                   </span>
@@ -226,11 +226,12 @@ const MyPage = () => {
               </div>
             </div>
           </div>
-          <div className="relative mt-8 flex space-x-2">
+          <div className="mb-3 mt-[44px] font-bold">고객 검색</div>
+
+          <div className="relative flex space-x-2">
             <input
               type="text"
-              className="focus:shadow-outline h-9 w-full rounded-lg border px-3 text-base text-gray-700 placeholder-gray-300
-              placeholder:text-xs"
+              className="focus:shadow-outline h-[46px] w-full rounded-lg px-3 text-base placeholder-[#a3a3a3] placeholder:text-xs placeholder:font-extralight"
               placeholder="고객명을 입력해주세요"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
@@ -258,7 +259,7 @@ const MyPage = () => {
               }}
             />
           </div>
-          <div className="my-5 flex justify-center">
+          <div className="my-[22px] flex justify-center">
             <button
               className="h-12 w-48 rounded-full bg-[#2d2d2d] px-3 text-sm text-white"
               onClick={() => setOpenNewCustomerModal(true)}
