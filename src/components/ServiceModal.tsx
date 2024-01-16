@@ -93,10 +93,11 @@ export default function ServiceModal({
                   }}
                 />
                 <div
-                  className="relative h-60 w-full"
+                  className="relative h-60 w-full bg-contain bg-center bg-no-repeat"
                   onClick={() => owner && fileInput.current?.click()}
+                  style={{ backgroundImage: `url(${image})` }}
                 >
-                  <Image src={image} fill alt="service" quality={100} />
+                  {/* <Image src={image} fill alt="service" quality={100} /> */}
                 </div>
                 {owner ? (
                   <div className="h-44 break-keep px-2 py-5 text-sm">

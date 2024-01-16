@@ -113,6 +113,8 @@ const MyPage = () => {
     }
   }, [userInfo.data]);
 
+  console.log(session?.user);
+
   if (!userInfo.data) return <></>;
 
   return (
@@ -125,7 +127,7 @@ const MyPage = () => {
       )}
 
       <div className="mx-auto flex min-h-screen max-w-md flex-col">
-        <div className="relative flex h-8 flex-row items-center justify-center bg-[#2d2d2d] text-sm text-white">
+        <div className="relative flex h-12 flex-row items-center justify-center bg-[#2d2d2d] text-sm text-white">
           <span>{customerNumber.data}명 등록 완료</span>
         </div>
         <div className="mt-10 px-6">

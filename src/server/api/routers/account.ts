@@ -59,7 +59,7 @@ export const accountRouter = createTRPCRouter({
           nickname: input.nickname,
         },
       });
-      return user ? "true" : "false";
+      return user.length !== 0 ? "true" : "false";
     }),
   updateAccount: protectedProcedure
     .input(

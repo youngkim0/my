@@ -44,13 +44,16 @@ export default function ReviewModal({
               leaveTo="opacity-0 translate-y-4 "
             >
               <Dialog.Panel className="relative h-[520px] w-full max-w-md transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:max-w-[400px]">
-                <div className="relative h-60 w-full">
-                  <Image
+                <div
+                  className={`relative h-60 w-full bg-contain bg-center bg-no-repeat`}
+                  style={{ backgroundImage: `url(${review.data.image})` }}
+                >
+                  {/* <Image
                     src={review.data.image}
                     fill
                     alt="review"
                     quality={100}
-                  />
+                  /> */}
                 </div>
                 <div className="h-44 overflow-y-auto break-keep px-2 py-5 text-sm">
                   {review.data.review}

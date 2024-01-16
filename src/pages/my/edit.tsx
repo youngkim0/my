@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Footer from "~/components/Footer";
 import { useState, useRef } from "react";
 import NewCustomerModal from "~/components/NewCustomerModal";
@@ -22,7 +21,7 @@ type Form = {
 const MyPage = () => {
   const [openNewCustomerModal, setOpenNewCustomerModal] =
     useState<boolean>(false);
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -112,8 +111,10 @@ const MyPage = () => {
       blog: form.blog,
       youtube: form.youtube,
     });
-
-    void router.push("/my");
+    if (userInfo.data?.nickname === "") {
+      await update({ nickname: form.nickname });
+    }
+    await router.push("/my");
   };
 
   if (!userInfo.data) return <div></div>;
@@ -177,25 +178,14 @@ const MyPage = () => {
                   backgroundImage:
                     form.image !== ""
                       ? `url(${form.image})`
-                      : userInfo.data.image
+                      : userInfo.data.image !== "" &&
+                          userInfo.data.image !== null
                         ? `url(${userInfo.data.image})`
-                        : "/images/avatar.png",
+                        : `url(/images/avatar.png)`,
                 }}
                 className="h-[100px] w-[100px] rounded-full bg-cover bg-center"
               ></div>
-              {/* <Image
-                src={
-                  form.image !== ""
-                    ? form.image
-                    : userInfo.data.image
-                      ? userInfo.data.image
-                      : "/images/avatar.png"
-                }
-                alt=""
-                width={100}
-                height={100}
-                className="rounded-full"
-              /> */}
+
               <div
                 className="mt-3 -translate-x-3 text-xs text-blue-700"
                 onClick={() => {

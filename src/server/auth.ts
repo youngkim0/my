@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type GetServerSidePropsContext } from "next";
 import {
@@ -22,7 +23,7 @@ declare module "next-auth" {
       id: string;
       kakaoID: string;
       name?: string;
-      nickname?: string;
+      nickname: string;
 
       // ...other properties
       // role: UserRole;
@@ -33,7 +34,7 @@ declare module "next-auth" {
     id: string;
     kakaoID: string;
     name?: string;
-    nickname?: string;
+    nickname: string;
 
     // ...other properties
     // role: UserRole;
@@ -51,18 +52,20 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     signIn({}) {
-      
       return true;
     },
     jwt(params) {
+      if (params.trigger === "update" && params.session.nickname) {
+        console.log("params:", params);
+        params.token.nickname = params.session.nickname;
+      }
       if (params.user?.id) {
-        
         params.token.id = params.user.id;
         params.token.kakaoID = params.user.kakaoID;
         params.token.name = params.user.kakaoID;
         if (params.user.nickname) params.token.nickname = params.user.nickname;
+        else params.token.nickname = "";
       }
-      
 
       return params.token;
     },
@@ -70,10 +73,11 @@ export const authOptions: NextAuthOptions = {
     session({ session, token }) {
       session.user.id = token.id as string;
       if (token.name) session.user.name = token.name;
-      if (token.nickname) session.user.nickname = token.nickname as string;
+      session.user.nickname = token.nickname as string;
 
+      console.log("session:", session);
       // if (token.kakaoID) session.user.kakaoID = token.kakaoID;
-      
+
       return session;
     },
   },

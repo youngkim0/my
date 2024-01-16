@@ -41,7 +41,6 @@ export default function Home() {
         console.log(id.toString());
         await signIn("credentials", {
           redirect: false,
-
           email: id.toString(),
         });
 

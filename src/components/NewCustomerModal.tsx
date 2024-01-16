@@ -433,7 +433,7 @@ const RadioGroup = ({
                 />
                 <label
                   htmlFor="thickness"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-xs font-medium leading-6 text-gray-900"
                 >
                   {item}
                 </label>
@@ -457,7 +457,7 @@ const RadioGroup = ({
                 />
                 <label
                   htmlFor="thickness"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-xs font-medium leading-6 text-gray-900"
                 >
                   {item}
                 </label>
@@ -511,7 +511,7 @@ const CheckGroup = ({
                 />
                 <label
                   htmlFor={item}
-                  className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                  className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                 >
                   {item}
                 </label>
@@ -542,7 +542,7 @@ const CheckGroup = ({
                   />
                   <label
                     htmlFor={item}
-                    className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                    className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                   >
                     {item}
                   </label>
@@ -574,7 +574,7 @@ const CheckGroup = ({
                   />
                   <label
                     htmlFor={item}
-                    className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                    className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                   >
                     {item}
                   </label>
@@ -606,7 +606,7 @@ const CheckGroup = ({
                   />
                   <label
                     htmlFor={title}
-                    className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                    className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                   >
                     {item}
                   </label>
@@ -638,7 +638,7 @@ const CheckGroup = ({
                   />
                   <label
                     htmlFor={title}
-                    className="block min-w-fit text-sm font-medium leading-6 text-gray-900"
+                    className="block min-w-fit text-xs font-medium leading-6 text-gray-900"
                   >
                     {item}
                   </label>

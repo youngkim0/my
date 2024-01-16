@@ -52,7 +52,16 @@ export default function MemoModal({
       await util.customer.getCustomerMemo.invalidate();
     },
   });
-  const deleteCustomer = api.customer.deleteCustomer.useMutation();
+  const deleteCustomer = api.customer.deleteCustomer.useMutation({
+    onSuccess: async () => {
+      await util.customer.getCustomerList.invalidate({
+        id: session?.user.name,
+      });
+      await util.customer.getCustomerListByID.invalidate({
+        id: session?.user.id,
+      });
+    },
+  });
 
   if (!customerInfo.data) return <></>;
 

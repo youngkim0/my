@@ -47,7 +47,16 @@ export default function MemoModal({
       });
     },
   });
-  const deleteCustomer = api.customer.deleteCustomer.useMutation();
+  const deleteCustomer = api.customer.deleteCustomer.useMutation({
+    onSuccess: async () => {
+      await util.customer.getCustomerList.invalidate({
+        id: session?.user.name,
+      });
+      await util.customer.getCustomerListByID.invalidate({
+        id: session?.user.id,
+      });
+    },
+  });
 
   return (
     <Transition.Root show={open} as={Fragment}>

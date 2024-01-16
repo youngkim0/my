@@ -20,6 +20,7 @@ const Home = () => {
   const { data: session } = useSession();
   const [openServiceModal, setOpenServiceModal] = useState<boolean>(false);
 
+  
   const userInfo = api.account.getAccountByNickname.useQuery(
     {
       nickname: router.query.id ? (router.query.id as string) : "",
@@ -58,7 +59,7 @@ const Home = () => {
         />
       )}
       {topbar && (
-        <div className="relative flex h-8 flex-row items-center justify-center bg-[#2D2D2D] text-sm text-white">
+        <div className="relative flex h-12 flex-row items-center justify-center bg-[#2D2D2D] text-sm text-white">
           <span onClick={() => void signOut()}>
             {customerNumber.data}명 등록 완료
           </span>
