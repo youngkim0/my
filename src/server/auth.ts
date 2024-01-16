@@ -51,18 +51,18 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     signIn({}) {
-      console.log("here");
+      
       return true;
     },
     jwt(params) {
       if (params.user?.id) {
-        console.log(params);
+        
         params.token.id = params.user.id;
         params.token.kakaoID = params.user.kakaoID;
         params.token.name = params.user.kakaoID;
         if (params.user.nickname) params.token.nickname = params.user.nickname;
       }
-      console.log("JWT", params.token);
+      
 
       return params.token;
     },
@@ -73,8 +73,7 @@ export const authOptions: NextAuthOptions = {
       if (token.nickname) session.user.nickname = token.nickname as string;
 
       // if (token.kakaoID) session.user.kakaoID = token.kakaoID;
-      console.log("SESSION");
-      console.log(session);
+      
       return session;
     },
   },
@@ -88,6 +87,7 @@ export const authOptions: NextAuthOptions = {
         const { email } = credentials as {
           email: string;
         };
+        console.log(credentials);
         const user = await db.user.findUnique({
           where: {
             kakaoID: email,

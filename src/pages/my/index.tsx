@@ -5,7 +5,7 @@ import Footer from "~/components/Footer";
 import { useState, useEffect } from "react";
 import NewCustomerModal from "~/components/NewCustomerModal";
 import SearchCard from "~/components/SearchCard";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import type { Clients } from "@prisma/client";
@@ -113,7 +113,6 @@ const MyPage = () => {
     }
   }, [userInfo.data]);
 
-
   if (!userInfo.data) return <></>;
 
   return (
@@ -130,7 +129,19 @@ const MyPage = () => {
           <span>{customerNumber.data}명 등록 완료</span>
         </div>
         <div className="mt-10 px-6">
-          <div className="mb-3 font-bold">마이페이지</div>
+          <div className="mb-3 flex flex-row justify-between font-bold">
+            <span>마이페이지</span>
+            <span
+              className="text-xs text-red-700"
+              onClick={async () => {
+                await signOut();
+                void router.push("/");
+              }}
+            >
+              로그아웃
+            </span>
+          </div>
+
           <div className="relative rounded-xl bg-white px-5 py-5">
             <div
               className="absolute right-4 top-3 cursor-pointer text-sm text-blue-800"

@@ -8,7 +8,7 @@ const Footer = () => {
   const [openPrivacyModal, setOpenPrivacyModal] = useState<boolean>(false);
 
   return (
-    <footer className="flex flex-row items-center space-x-5 bg-[#2d2d2d] px-6 py-6 text-sm text-white">
+    <footer className="relative flex flex-row  space-x-5 bg-[#2d2d2d] px-6 py-6 text-sm text-white">
       {openServiceModal && (
         <MemberServiceModal
           open={openServiceModal}
@@ -24,15 +24,15 @@ const Footer = () => {
       <div>
         <Image src="/images/my-logo.png" alt="logo" width={42} height={33} />
       </div>
-      <div className="relative flex flex-col space-y-1 text-xs">
-        <div>문의: korhyek@naver.com </div>
-        <div className="absolute bottom-1 right-2">
+      <div className="flex flex-col space-y-1 text-xs">
+        <div>
           <span onClick={() => setOpenServiceModal(true)}>이용약관</span>
           <span className="px-2">|</span>
           <span onClick={() => setOpenPrivacyModal(true)}>
             개인정보처리방침
           </span>
         </div>
+        <div>문의: korhyek@naver.com </div>
         <div className="text-gray-200">copyright 2024 my-membership</div>
       </div>
     </footer>

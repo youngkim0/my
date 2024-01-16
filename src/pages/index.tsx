@@ -24,6 +24,7 @@ export default function Home() {
     const check = await checkRegistered.mutateAsync({
       id: id.toString(),
     });
+    console.log(check);
 
     if (check) {
       alert("이미 등록된 회원입니다.");
@@ -34,27 +35,25 @@ export default function Home() {
       const response = await register.mutateAsync({
         id: id.toString(),
       });
+      console.log(response);
 
       if (response) {
+        console.log(id.toString());
         await signIn("credentials", {
-          redirect: true,
-          callbackUrl: "/my",
-          credentials: {
-            email: id.toString(),
-          },
+          redirect: false,
+
+          email: id.toString(),
         });
-        void router.push("/my");
+
+        // void router.push("/my");
       }
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(session?.user);
 
-  const onClick = async () => {
-    await signIn("kakao", {
-      callbackUrl: "/my",
-    });
-  };
+
 
   return (
     <div className="mx-auto flex min-h-[100vh] max-w-md flex-col items-center">

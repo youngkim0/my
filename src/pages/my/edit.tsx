@@ -3,7 +3,7 @@ import Footer from "~/components/Footer";
 import { useState, useRef } from "react";
 import NewCustomerModal from "~/components/NewCustomerModal";
 import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import TextareaAutosize from "react-textarea-autosize";
 
@@ -132,7 +132,19 @@ const MyPage = () => {
           <span>{customerNumber.data}명 등록 완료</span>
         </div>
         <div className="mt-10 px-6">
-          <div className="mb-3 font-bold">마이페이지</div>
+          <div className="mb-3 flex flex-row justify-between font-bold">
+            <span>마이페이지</span>
+            <span
+              className="text-xs text-red-700"
+              onClick={async () => {
+                await signOut().then(() => {
+                  void router.push("/");
+                });
+              }}
+            >
+              로그아웃
+            </span>
+          </div>
           <div className="mb-10 rounded-xl bg-white px-5 py-5">
             <div className="flex flex-col items-center space-x-5">
               <input
