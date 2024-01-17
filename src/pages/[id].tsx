@@ -119,7 +119,7 @@ const Home = () => {
           </div>
           <div
             className={`cursor-pointer 
-              break-keep pt-[18px] text-sm leading-6`}
+              whitespace-pre-wrap break-keep pt-[18px] text-sm leading-6`}
           >
             {userInfo.data.description}
           </div>
