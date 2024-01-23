@@ -29,8 +29,13 @@ export default function NewReviewModal({
 
   const [image, setImage] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
+  const util = api.useUtils();
 
-  const addReview = api.customer.addNewReview.useMutation();
+  const addReview = api.customer.addNewReview.useMutation({
+    onSuccess: async () => {
+      await util.customer.getReviewsByID.invalidate();
+    },
+  });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
