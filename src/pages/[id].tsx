@@ -64,7 +64,7 @@ const Home = () => {
             {customerNumber.data}명 등록 완료
           </span>
           <span
-            className="absolute right-5 top-1 cursor-pointer"
+            className="absolute right-5 top-3 cursor-pointer"
             onClick={() => setTopbar(false)}
           >
             x

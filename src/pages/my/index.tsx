@@ -113,7 +113,6 @@ const MyPage = () => {
     }
   }, [userInfo.data]);
 
-  console.log(session?.user);
 
   if (!userInfo.data) return <></>;
 
@@ -191,25 +190,82 @@ const MyPage = () => {
             <div className="mt-6 flex flex-row space-x-3 text-xs text-[#a3a3a3]">
               <div className="flex w-1/2 flex-col space-y-2">
                 <p className="text-xs font-semibold text-black">고객관리</p>
-                <p style={{ fontWeight: 400 }}>
+                <p
+                  style={{ fontWeight: 400 }}
+                  onClick={() => {
+                    setSearched(true);
+                    setSearchedCustomer(
+                      customerList.data!.filter((customer) => {
+                        const today = new Date();
+                        return (
+                          today.getMonth() + 1 ===
+                          parseInt(customer.birth.slice(4, 6))
+                        );
+                      }),
+                    );
+                  }}
+                >
                   <span>🎂 이달 생일인 고객 </span>
                   <span className="font-bold text-black">
                     {customerFact.monthBirthday}명
                   </span>
                 </p>
-                <p>
+                <p
+                  onClick={() => {
+                    setSearched(true);
+                    setSearchedCustomer(
+                      customerList.data!.filter((customer) => {
+                        const today = new Date();
+                        const date = new Date(customer.createdAt);
+                        return (
+                          today.getFullYear() === date.getFullYear() &&
+                          today.getMonth() === date.getMonth()
+                        );
+                      }),
+                    );
+                  }}
+                >
                   ✍🏻 이달 등록된 고객{" "}
                   <span className="font-bold text-black">
                     {customerFact.monthJoined}명
                   </span>
                 </p>
-                <p>
+                <p
+                  onClick={() => {
+                    setSearched(true);
+                    setSearchedCustomer(
+                      customerList.data!.filter((customer) => {
+                        const today = new Date();
+                        return (
+                          today.getMonth() + 1 ===
+                            parseInt(customer.birth.slice(4, 6)) &&
+                          today.getDate() === parseInt(customer.birth.slice(6))
+                        );
+                      }),
+                    );
+                  }}
+                >
                   🎉 오늘 생일인 고객{" "}
                   <span className="font-bold text-black">
                     {customerFact.todayBirthday}명
                   </span>
                 </p>
-                <p>
+                <p
+                  onClick={() => {
+                    setSearched(true);
+                    setSearchedCustomer(
+                      customerList.data!.filter((customer) => {
+                        const today = new Date();
+                        const date = new Date(customer.createdAt);
+                        return (
+                          today.getFullYear() === date.getFullYear() &&
+                          today.getMonth() === date.getMonth() &&
+                          today.getDate() === date.getDate()
+                        );
+                      }),
+                    );
+                  }}
+                >
                   📝 오늘 등록된 고객{" "}
                   <span className="font-bold text-black">
                     {customerFact.todayJoined}명
@@ -254,7 +310,7 @@ const MyPage = () => {
               alt="search"
               width={20}
               height={20}
-              className="absolute right-3 top-2"
+              className="absolute right-3 top-3"
               onClick={() => {
                 if (searched) {
                   setSearched(false);

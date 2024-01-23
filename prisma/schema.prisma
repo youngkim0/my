@@ -96,48 +96,55 @@ model Clients {
 }
 
 model ClientMemo {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
-    clientID   String
-    userID     String
-    memo       String
-    image      String?
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
-    
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    clientID  String
+    userID    String
+    memo      String
+    image     String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model ClientConsult {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
-    clientID   String
-    userID     String
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    clientID  String
+    userID    String
     front1    String
-    side1   String
-    front2  String
-    side2   String
-    memo       String
-    replied   Boolean @default(false)
-    reply      String
-    reviewed   Boolean @default(false)
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    side1     String
+    front2    String
+    side2     String
+    memo      String
+    replied   Boolean  @default(false)
+    reply     String
+    reviewed  Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model ClientReview {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
-    clientID   String
-    userID     String
-    review     String
-    image      String
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    clientID  String
+    userID    String
+    review    String
+    image     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Service {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
-    userID     String
-    name       String
-    image      String 
-    content    String
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    userID    String
+    name      String
+    image     String
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model UserPurchases {
+    id        String @id @default(auto()) @map("_id") @db.ObjectId
+    userID    String
+    expiresAt String
+    purchasedAt String
+    
 }

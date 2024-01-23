@@ -6,6 +6,7 @@ import Footer from "~/components/Footer";
 import type { Clients } from "@prisma/client";
 import Image from "next/image";
 import EditCustomerModal from "~/components/EditCustomerModal";
+import Calendar from "react-calendar";
 
 const Admin = () => {
   const [clickedID, setClickedID] = useState<string>("");
@@ -14,6 +15,7 @@ const Admin = () => {
   const [searched, setSearched] = useState<boolean>(false);
   const [clickedCustomer, setClickedCustomer] = useState<string>("");
   const [openEditCustomer, setOpenEditCustomer] = useState<boolean>(false);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   const util = api.useUtils();
 
@@ -66,6 +68,12 @@ const Admin = () => {
       enabled: clickedID !== "",
     },
   );
+  const updateDate = api.account.extendService.useMutation({
+    onSuccess: async () => {
+      alert("기간을 연장했습니다.");
+      await util.account.getAllDesigners.invalidate();
+    },
+  });
 
   if (!designerList.data) return <></>;
   return (
@@ -89,8 +97,13 @@ const Admin = () => {
             <div
               className="flex justify-between gap-x-6 py-2"
               onClick={() => {
-                if (clickedID === person.id) setClickedID("");
-                else setClickedID(person.id);
+                if (clickedID === person.id) {
+                  setClickedID("");
+                  setEndDate(null);
+                } else {
+                  setClickedID(person.id);
+                  setEndDate(null);
+                }
               }}
             >
               <div className="flex min-w-0 gap-x-4">
@@ -175,6 +188,34 @@ const Admin = () => {
                       </dt>
                       <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         {format(new Date(person.joinedAt), "yyyy-MM-dd")}
+                      </dd>
+                    </div>
+                    <div className="px-1 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-gray-900">
+                        기간 연장
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <Calendar
+                          onChange={(date) => {
+                            setEndDate(date as Date);
+                          }}
+                        />
+                        <button
+                          className="mt-2 rounded-full bg-blue-500 px-3 py-1 text-white "
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            if (endDate === null) {
+                              alert("기간을 선택해주세요.");
+                              return;
+                            }
+                            await updateDate.mutateAsync({
+                              id: person.kakaoID,
+                              extendDate: endDate.toLocaleDateString(),
+                            });
+                          }}
+                        >
+                          기간 연장
+                        </button>
                       </dd>
                     </div>
                     <div className="px-1 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

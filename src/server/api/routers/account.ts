@@ -224,4 +224,18 @@ export const accountRouter = createTRPCRouter({
       });
       return user;
     }),
+  extendService: publicProcedure
+    .input(z.object({ id: z.string(), extendDate: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.userPurchases.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          expiresAt: input.extendDate,
+          purchasedAt: new Date().toLocaleDateString(),
+        },
+      });
+      return user;
+    }),
 });
