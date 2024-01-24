@@ -185,11 +185,24 @@ export const customerRouter = createTRPCRouter({
       return true;
     }),
   checkCustomer: publicProcedure
-    .input(z.object({ name: z.string(), phoneNumber: z.string() }))
+    .input(
+      z.object({
+        name: z.string(),
+        phoneNumber: z.string(),
+        userNickname: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
+      const userID = await ctx.db.user.findFirst({
+        where: {
+          nickname: input.userNickname,
+        },
+      });
+
       const user = await ctx.db.clients.findMany({
         where: {
           name: input.name,
+          userID: userID?.kakaoID,
         },
       });
       for (const u of user) {

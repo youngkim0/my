@@ -18,6 +18,8 @@ const ConsultRequestCheck = ({
 
   const [review, setReview] = useState(false);
   const [consultID, setConsultID] = useState<string>("");
+  console.log(consultList.data);
+  console.log(userInfo.userID);
 
   if (!consultList.data) return <></>;
   if (review) {

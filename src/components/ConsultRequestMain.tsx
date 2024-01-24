@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
+import { useRouter } from "next/router";
 
 const ConsultRequestMain = ({
   setPage,
@@ -18,6 +19,8 @@ const ConsultRequestMain = ({
 }) => {
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
+
+  const router = useRouter();
 
   const checkCustomer = api.customer.checkCustomer.useMutation();
   return (
@@ -49,6 +52,7 @@ const ConsultRequestMain = ({
             const check = await checkCustomer.mutateAsync({
               name,
               phoneNumber: phone,
+              userNickname: router.asPath.split("/")[1]!,
             });
             if (!check) {
               alert("고객님의 정보가 없습니다.");
@@ -72,6 +76,7 @@ const ConsultRequestMain = ({
             const check = await checkCustomer.mutateAsync({
               name,
               phoneNumber: phone,
+              userNickname: router.asPath.split("/")[1]!,
             });
             if (!check) {
               alert("고객님의 정보가 없습니다.");
