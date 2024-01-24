@@ -33,6 +33,7 @@ const ConsultRequestRequest = ({
   const side1Ref = useRef<HTMLInputElement>(null);
   const front2Ref = useRef<HTMLInputElement>(null);
   const side2Ref = useRef<HTMLInputElement>(null);
+  const [consultTitle, setConsultTitle] = useState<string>("");
 
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -186,6 +187,12 @@ const ConsultRequestRequest = ({
           </div>
         </div>
       </div>
+      <input
+        className="mt-3 w-full rounded-md bg-[#ececec] px-4 py-2 placeholder:text-sm placeholder:font-thin placeholder:tracking-wide placeholder:text-[#a3a3a3]"
+        placeholder="원하시는 시술: (커트, 펌 등을 입력해주세요)"
+        value={consultTitle}
+        onChange={(e) => setConsultTitle(e.target.value)}
+      />
       <TextareaAutosize
         minRows={4}
         className="mt-3 w-full resize-none rounded-md bg-[#ececec] px-4 py-4 placeholder:text-sm placeholder:font-thin placeholder:tracking-wide placeholder:text-[#a3a3a3]"
@@ -206,6 +213,7 @@ const ConsultRequestRequest = ({
               front2: images.front2,
               side2: images.side2,
               memo,
+              consultTitle,
             });
             alert("상담 신청이 완료되었습니다.");
             setPage("main");

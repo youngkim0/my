@@ -258,6 +258,7 @@ export const customerRouter = createTRPCRouter({
         side1: z.string(),
         front2: z.string(),
         side2: z.string(),
+        consultTitle: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -275,6 +276,14 @@ export const customerRouter = createTRPCRouter({
           replied: false,
           reply: "",
           reviewed: false,
+        },
+      });
+      await ctx.db.clients.update({
+        where: {
+          id: input.customerID,
+        },
+        data: {
+          recentConsult: input.consultTitle,
         },
       });
       return true;

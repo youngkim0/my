@@ -20,7 +20,11 @@ const ConsultCard = ({ consult }: { consult: ClientConsult }) => {
   return (
     <>
       {consult.replied ? (
-        <MemoModal open={open} setOpen={setOpen} customerInfo={customerInfo.data}/>
+        <MemoModal
+          open={open}
+          setOpen={setOpen}
+          customerInfo={customerInfo.data}
+        />
       ) : (
         <ConsultModal
           open={open}
@@ -56,7 +60,12 @@ const ConsultCard = ({ consult }: { consult: ClientConsult }) => {
           <span>|</span>
         </div>
         <div className="flex space-x-2">
-          <span>상담시술: ?</span>
+          <span>
+            상담시술:{" "}
+            {customerInfo.data.recentConsult
+              ? customerInfo.data.recentConsult
+              : ""}
+          </span>
           <span>|</span>
           <span>최근시술: ?</span>
         </div>

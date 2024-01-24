@@ -93,6 +93,7 @@ model Clients {
     styleConcept    String[]
     importantHair   String[]
     createdAt       DateTime @default(now())
+    recentConsult   String?
 }
 
 model ClientMemo {

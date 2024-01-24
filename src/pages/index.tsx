@@ -555,7 +555,6 @@ export default function Home() {
             에 동의합니다.
           </div>
         </div>
-        {/* <p className="mt-4 text-center">카카오</p> */}
       </div>
     </div>
   );
