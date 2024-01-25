@@ -131,7 +131,16 @@ const MyPage = () => {
         </div>
         <div className="mt-10 px-6">
           <div className="mb-3 flex flex-row justify-between font-bold">
-            <span>마이페이지</span>
+            <div>
+              <span>마이페이지</span>
+              <Link
+                className="ml-4 cursor-pointer text-sm text-blue-800"
+                href="https://open.kakao.com/o/g1vySR5f"
+                target="_blank"
+              >
+                오픈채팅방 입장
+              </Link>
+            </div>
             <span
               className="text-xs text-red-700"
               onClick={async () => {

@@ -26,7 +26,7 @@ const MainReviews = ({ id }: { id: string }) => {
       dotListClass=""
       draggable
       focusOnSelect={false}
-      partialVisbile={true}
+      partialVisible={reviewList.data.length > 1 ? true : false}
       infinite={false}
       itemClass=""
       keyBoardControl

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useState } from "react";
 import ServiceModal from "./ServiceModal";
 import type { Service } from "@prisma/client";

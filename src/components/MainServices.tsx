@@ -14,14 +14,13 @@ const MainServices = ({
     <Carousel
       additionalTransfrom={0}
       arrows={false}
-      autoPlaySpeed={3000}
       centerMode={false}
       className=""
       containerClass="container"
       dotListClass=""
       draggable
       focusOnSelect={false}
-      partialVisbile={true}
+      partialVisible={services.length > 1 ? true : false}
       infinite={false}
       itemClass=""
       keyBoardControl

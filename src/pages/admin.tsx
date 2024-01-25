@@ -1,12 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { api } from "~/utils/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Footer from "~/components/Footer";
 import type { Clients } from "@prisma/client";
 import Image from "next/image";
 import EditCustomerModal from "~/components/EditCustomerModal";
 import Calendar from "react-calendar";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Admin = () => {
   const [clickedID, setClickedID] = useState<string>("");
@@ -17,7 +19,10 @@ const Admin = () => {
   const [openEditCustomer, setOpenEditCustomer] = useState<boolean>(false);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
+  const { data: session } = useSession();
+
   const util = api.useUtils();
+  const router = useRouter();
 
   const deleteDesigner = api.account.deleteAccount.useMutation({
     onSuccess: async () => {
@@ -75,7 +80,18 @@ const Admin = () => {
     },
   });
 
-  if (!designerList.data) return <></>;
+  useEffect(() => {
+    if (
+      session?.user &&
+      session.user.nickname !== "korhyek" &&
+      session.user.nickname !== "myname"
+    ) {
+      alert("관리자만 접근 가능합니다.");
+      void router.push("/");
+    }
+  }, [session]);
+
+  if (!designerList.data || !session?.user) return <></>;
   return (
     <div className="flex min-h-screen flex-col">
       {openEditCustomer && (
