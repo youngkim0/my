@@ -280,12 +280,12 @@ export default function EditCustomerModal({
                     form={form}
                     setForm={setForm}
                   />
-                  <RadioGroup
+                  <CheckGroup
                     title="관심 있는 시술"
                     items={["커트", "펌", "염색", "클리닉"]}
                     section="interestService"
-                    form={form}
-                    setForm={setForm}
+                    form={formCheckbox}
+                    setForm={setFormCheckbox}
                   />
 
                   <CheckGroup
@@ -322,7 +322,7 @@ export default function EditCustomerModal({
                       "고급스럽게",
                       "부드럽게",
                       "편안하게",
-                      "회신 유행스타일",
+                      "최근신 유행스타일",
                       "나에게 어울리는 스타일",
                     ]}
                   />
@@ -330,7 +330,7 @@ export default function EditCustomerModal({
                     section="styleConcept"
                     form={formCheckbox}
                     setForm={setFormCheckbox}
-                    title="고객이 중요하게 생각하는 것"
+                    title="홈케어시 불편한 사항"
                     items={[
                       "볼륨이 없다/많다",
                       "너무 상했다",

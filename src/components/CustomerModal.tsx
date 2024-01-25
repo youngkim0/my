@@ -206,7 +206,7 @@ export default function MemoModal({
                     ))}
                   </div>
                   <div className="mt-3">
-                    <p>고객이 중요하게 생각하는 것:</p>
+                    <p>홈케어시 불편한 사항:</p>
                     {customerInfo.data.important.map((item, index) => (
                       <span className="mr-2">
                         {item}

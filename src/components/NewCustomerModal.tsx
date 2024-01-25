@@ -4,7 +4,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Image from "next/image";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
-import { set } from "date-fns";
+
 
 type Form = {
   name: string;
@@ -65,7 +65,6 @@ export default function NewCustomerModal({
     hairDye: "",
     hairClinic: "",
     hairStyle: "",
-
     scalpType: "",
     dandruff: "",
     hairLoss: "",
@@ -110,7 +109,6 @@ export default function NewCustomerModal({
     });
     setOpen(false);
   };
-  console.log(form.visitPath);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -353,12 +351,12 @@ export default function NewCustomerModal({
                     form={form}
                     setForm={setForm}
                   />
-                  <RadioGroup
+                  <CheckGroup
                     title="관심 있는 시술"
                     items={["커트", "펌", "염색", "클리닉"]}
                     section="interestService"
-                    form={form}
-                    setForm={setForm}
+                    form={formCheckbox}
+                    setForm={setFormCheckbox}
                   />
 
                   <CheckGroup
@@ -395,7 +393,7 @@ export default function NewCustomerModal({
                       "고급스럽게",
                       "부드럽게",
                       "편안하게",
-                      "회신 유행스타일",
+                      "최신 유행스타일",
                       "나에게 어울리는 스타일",
                     ]}
                   />
@@ -403,7 +401,7 @@ export default function NewCustomerModal({
                     section="styleConcept"
                     form={formCheckbox}
                     setForm={setFormCheckbox}
-                    title="고객이 중요하게 생각하는 것"
+                    title="홈케어시 불편한 사항"
                     items={[
                       "볼륨이 없다/많다",
                       "너무 상했다",
