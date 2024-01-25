@@ -18,7 +18,7 @@ type Form = {
   hairDye: string;
   hairClinic: string;
   hairStyle: string;
-  interestService: string;
+  
   scalpType: string;
   dandruff: string;
   hairLoss: string;
@@ -31,6 +31,7 @@ type FormCheckbox = {
   important: string[];
   styleConcept: string[];
   importantHair: string[];
+  interestService: string[];
 };
 
 export default function NewCustomerModal({
@@ -64,7 +65,6 @@ export default function NewCustomerModal({
     hairDye: "",
     hairClinic: "",
     hairStyle: "",
-    interestService: "",
 
     scalpType: "",
     dandruff: "",
@@ -77,6 +77,7 @@ export default function NewCustomerModal({
     important: [],
     styleConcept: [],
     importantHair: [],
+    interestService: [],
   });
 
   const handleSubmit = async () => {
@@ -96,7 +97,7 @@ export default function NewCustomerModal({
       hairDye: form.hairDye,
       hairClinic: form.hairClinic,
       hairStyle: form.hairStyle,
-      interestService: form.interestService,
+      interestService: formCheckbox.interestService,
       scalpType: form.scalpType,
       dandruff: form.dandruff,
       hairLoss: form.hairLoss,
