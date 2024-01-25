@@ -4,6 +4,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Image from "next/image";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
+import { set } from "date-fns";
 
 type Form = {
   name: string;
@@ -47,6 +48,9 @@ export default function NewCustomerModal({
   });
   const { data: session } = useSession();
 
+  const [etc, setEtc] = useState("");
+  const [recommend, setRecommend] = useState("");
+
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState<Form>({
     name: "",
@@ -82,7 +86,10 @@ export default function NewCustomerModal({
       phoneNumber: form.phoneNumber,
       gender: form.gender,
       birth: form.birth,
-      visitPath: form.visitPath,
+      visitPath:
+        etc !== "" || recommend !== ""
+          ? form.visitPath + " - " + etc + recommend
+          : form.visitPath,
       hairThickness: form.hairThickness,
       hairType: form.hairType,
       hairFerm: form.hairFerm,
@@ -102,6 +109,7 @@ export default function NewCustomerModal({
     });
     setOpen(false);
   };
+  console.log(form.visitPath);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -194,13 +202,117 @@ export default function NewCustomerModal({
                       }));
                     }}
                   />
-                  <RadioGroup
-                    title="방문경로"
-                    items={["네이버", "인스타그램", "지인추천", "기타"]}
-                    section="visitPath"
-                    form={form}
-                    setForm={setForm}
-                  />
+
+                  <fieldset className="mt-2 flex space-x-4">
+                    <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          id="네이버"
+                          name="네이버"
+                          type="radio"
+                          className="h-3 w-3 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          checked={form["visitPath" as keyof Form] === "네이버"}
+                          onChange={() => {
+                            const newForm = { ...form };
+                            newForm["visitPath" as keyof Form] = "네이버";
+                            setForm(newForm);
+                            setEtc("");
+                            setRecommend("");
+                          }}
+                        />
+                        <label
+                          htmlFor="thickness"
+                          className="block text-xs font-medium leading-6 text-gray-900"
+                        >
+                          네이버
+                        </label>
+                      </div>
+                    </div>
+                    <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          id="인스타그램"
+                          name="인스타그램"
+                          type="radio"
+                          className="h-3 w-3 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          checked={
+                            form["visitPath" as keyof Form] === "인스타그램"
+                          }
+                          onChange={() => {
+                            const newForm = { ...form };
+                            newForm["visitPath" as keyof Form] = "인스타그램";
+                            setForm(newForm);
+                            setEtc("");
+                            setRecommend("");
+                          }}
+                        />
+                        <label
+                          htmlFor="thickness"
+                          className="block text-xs font-medium leading-6 text-gray-900"
+                        >
+                          인스타그램
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div className="mt-2 flex items-center">
+                    <input
+                      id="기타"
+                      name="기타"
+                      type="radio"
+                      className="mr-2 h-3 w-3 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      checked={form["visitPath" as keyof Form] === "기타"}
+                      onChange={() => {
+                        const newForm = { ...form };
+                        newForm["visitPath" as keyof Form] = "기타";
+                        setRecommend("");
+                        setForm(newForm);
+                      }}
+                    />
+                    <span className="min-w-fit text-xs">기타</span>
+                    <input
+                      type="text"
+                      className="ml-auto w-3/4 rounded-md bg-[#ececec] px-2 py-1 text-sm font-semibold text-gray-700"
+                      value={etc}
+                      onChange={(e) => {
+                        setEtc(e.target.value);
+                      }}
+                      onFocus={() => {
+                        const newForm = { ...form };
+                        newForm["visitPath" as keyof Form] = "기타";
+                        setForm(newForm);
+                      }}
+                    />
+                  </div>
+                  <div className="mt-2 flex items-center">
+                    <input
+                      id="지인추천"
+                      name="지인추천"
+                      type="radio"
+                      className="mr-2 h-3 w-3 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      checked={form["visitPath" as keyof Form] === "지인추천"}
+                      onChange={() => {
+                        const newForm = { ...form };
+                        newForm["visitPath" as keyof Form] = "지인추천";
+                        setEtc("");
+                        setForm(newForm);
+                      }}
+                    />
+                    <span className="min-w-fit text-xs">지인추천</span>
+                    <input
+                      type="text"
+                      className="ml-auto w-3/4 rounded-md bg-[#ececec] px-2 py-1 text-sm font-semibold text-gray-700"
+                      value={recommend}
+                      onChange={(e) => {
+                        setRecommend(e.target.value);
+                      }}
+                      onFocus={() => {
+                        const newForm = { ...form };
+                        newForm["visitPath" as keyof Form] = "지인추천";
+                        setForm(newForm);
+                      }}
+                    />
+                  </div>
                   <RadioGroup
                     title="모발굵기"
                     items={["가는모발", "중간모발", "굵은모발"]}
@@ -416,14 +528,14 @@ const RadioGroup = ({
       <div className="mt-4 text-base font-semibold">{title}</div>
       <fieldset className="mt-2">
         <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             {items.slice(0, 5).map((item) => (
               <Fragment key={item}>
                 <input
                   id={item + title}
                   name={item + title}
                   type="radio"
-                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  className="h-3 w-3 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   checked={form[section as keyof Form] === item}
                   onChange={() => {
                     const newForm = { ...form };
@@ -440,14 +552,14 @@ const RadioGroup = ({
               </Fragment>
             ))}
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             {items.slice(5, 10).map((item) => (
               <Fragment key={item}>
                 <input
                   id={item}
                   name={item}
                   type="radio"
-                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  className="h-3 w-3 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   checked={form[section as keyof Form] === item}
                   onChange={() => {
                     const newForm = { ...form };
@@ -488,14 +600,14 @@ const CheckGroup = ({
       <div className="mt-4 text-base font-semibold">{title}</div>
       <fieldset className="mt-2">
         <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-          <div className="flex flex-wrap items-center space-x-3">
+          <div className="flex flex-wrap items-center space-x-2">
             {items.slice(0, 3).map((item) => (
               <Fragment key={item}>
                 <input
                   id={item}
                   name="notification-method"
                   type="checkbox"
-                  className="h-4 w-4  border-gray-300 "
+                  className="h-3 w-3  border-gray-300 "
                   checked={form[section as keyof FormCheckbox].includes(item)}
                   onChange={(e) => {
                     const newForm = { ...form };
@@ -519,14 +631,14 @@ const CheckGroup = ({
             ))}
           </div>
           {items.length > 3 && (
-            <div className="flex flex-wrap items-center  space-x-3">
+            <div className="flex flex-wrap items-center  space-x-2">
               {items.slice(3, 6).map((item) => (
                 <Fragment key={item}>
                   <input
                     id={item}
                     name="notification-method"
                     type="checkbox"
-                    className="h-4 w-4  border-gray-300"
+                    className="h-3 w-3  border-gray-300"
                     checked={form[section as keyof FormCheckbox].includes(item)}
                     onChange={(e) => {
                       const newForm = { ...form };
@@ -551,14 +663,14 @@ const CheckGroup = ({
             </div>
           )}
           {items.length > 6 && (
-            <div className="flex flex-wrap items-center  space-x-3">
+            <div className="flex flex-wrap items-center  space-x-2">
               {items.slice(6, 9).map((item) => (
                 <Fragment key={item}>
                   <input
                     id={item}
                     name="notification-method"
                     type="checkbox"
-                    className="h-4 w-4  border-gray-300"
+                    className="h-3 w-3  border-gray-300"
                     checked={form[section as keyof FormCheckbox].includes(item)}
                     onChange={(e) => {
                       const newForm = { ...form };
@@ -583,14 +695,14 @@ const CheckGroup = ({
             </div>
           )}
           {items.length > 9 && (
-            <div className="flex flex-wrap items-center  space-x-3">
+            <div className="flex flex-wrap items-center  space-x-2">
               {items.slice(9, 12).map((item) => (
                 <Fragment key={item}>
                   <input
                     id={title}
                     name="notification-method"
                     type="checkbox"
-                    className="h-4 w-4  border-gray-300"
+                    className="h-3 w-3  border-gray-300"
                     checked={form[section as keyof FormCheckbox].includes(item)}
                     onChange={(e) => {
                       const newForm = { ...form };
@@ -615,14 +727,14 @@ const CheckGroup = ({
             </div>
           )}
           {items.length > 12 && (
-            <div className="flex flex-wrap items-center  space-x-3">
+            <div className="flex flex-wrap items-center  space-x-2">
               {items.slice(12, 15).map((item) => (
                 <Fragment key={item}>
                   <input
                     id={title}
                     name="notification-method"
                     type="checkbox"
-                    className="h-4 w-4  border-gray-300"
+                    className="h-3 w-3  border-gray-300"
                     checked={form[section as keyof FormCheckbox].includes(item)}
                     onChange={(e) => {
                       const newForm = { ...form };

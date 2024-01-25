@@ -26,8 +26,6 @@ export default function ConsultModal({
     },
   });
 
-  console.log(consult);
-
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[2000]" onClose={setOpen}>

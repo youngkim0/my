@@ -82,7 +82,7 @@ model Clients {
     hairDye         String
     hairClinic      String
     hairStyle       String
-    interestService String
+    interestService String[]
     scalpType       String
     dandruff        String
     hairLoss        String
@@ -94,6 +94,7 @@ model Clients {
     importantHair   String[]
     createdAt       DateTime @default(now())
     recentConsult   String?
+    recentConsultDate String?
 }
 
 model ClientMemo {

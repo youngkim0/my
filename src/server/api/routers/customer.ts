@@ -297,6 +297,7 @@ export const customerRouter = createTRPCRouter({
         },
         data: {
           recentConsult: input.consultTitle,
+          recentConsultDate: new Date().toLocaleString(),
         },
       });
       return true;

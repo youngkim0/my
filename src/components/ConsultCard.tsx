@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ConsultModal from "./ConsultModal";
-import MemoModal from "./MemoModal";
 import type { ClientConsult } from "@prisma/client";
 import { api } from "~/utils/api";
+import { format } from "date-fns";
+import ConsultRepliedModal from "./ConsultRepliedModal";
 
 const ConsultCard = ({ consult }: { consult: ClientConsult }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -20,10 +21,11 @@ const ConsultCard = ({ consult }: { consult: ClientConsult }) => {
   return (
     <>
       {consult.replied ? (
-        <MemoModal
+        <ConsultRepliedModal
           open={open}
           setOpen={setOpen}
           customerInfo={customerInfo.data}
+          replied={consult.reply}
         />
       ) : (
         <ConsultModal
@@ -59,18 +61,22 @@ const ConsultCard = ({ consult }: { consult: ClientConsult }) => {
           </span>
           <span>|</span>
         </div>
-        <div className="flex space-x-2">
-          <span>
-            상담시술:{" "}
-            {customerInfo.data.recentConsult
-              ? customerInfo.data.recentConsult
-              : ""}
-          </span>
-          <span>|</span>
-          <span>최근시술: ?</span>
+        <div>
+          최근 마지막 상담 시술:{" "}
+          {customerInfo.data.recentConsult
+            ? customerInfo.data.recentConsult
+            : "첫 상담 요청"}
         </div>
-        <div className="flex space-x-2">
-          <div>최근방문일: ?</div>
+        <div>
+          <div>
+            최근방문일:{" "}
+            {customerInfo.data.recentConsultDate
+              ? format(
+                  new Date(customerInfo.data.recentConsultDate),
+                  "yyyy/MM/dd",
+                )
+              : "첫 상담 요청"}
+          </div>
         </div>
       </div>
     </>
