@@ -163,7 +163,7 @@ export default function MemoModal({
                   <div className="mt-3">
                     관심 있는 시술: 관심 있는 시술:{" "}
                     {customerInfo.interestService.map((item, index) => (
-                      <span className="mr-2">
+                      <span className="mr-2" key={item + index}>
                         {item}
                         {index !== customerInfo.interestService.length - 1
                           ? ","
@@ -174,7 +174,7 @@ export default function MemoModal({
                   <div className="mt-3">
                     <p>헤어스타일에서 중요하게 생각하는 부분:</p>
                     {customerInfo.importantHair.map((item, index) => (
-                      <span className="mr-2">
+                      <span className="mr-2" key={item + index}>
                         {item}
                         {index !== customerInfo.importantHair.length - 1
                           ? ","
@@ -185,7 +185,7 @@ export default function MemoModal({
                   <div className="mt-3">
                     <p>고객이 추구하는 스타일 컨셉:</p>
                     {customerInfo.styleConcept.map((item, index) => (
-                      <span className="mr-2">
+                      <span className="mr-2" key={item + index}>
                         {item}
                         {index !== customerInfo.styleConcept.length - 1
                           ? ","
@@ -196,7 +196,7 @@ export default function MemoModal({
                   <div className="mt-3">
                     <p>홈케어시 불편한 사항:</p>
                     {customerInfo.important.map((item, index) => (
-                      <span className="mr-2">
+                      <span className="mr-2" key={item + index}>
                         {item}
                         {index !== customerInfo.important.length - 1 ? "," : ""}
                       </span>
