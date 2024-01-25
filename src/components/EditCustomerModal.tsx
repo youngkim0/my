@@ -17,7 +17,6 @@ type Form = {
   hairDye: string;
   hairClinic: string;
   hairStyle: string;
-  interestService: string;
   scalpType: string;
   dandruff: string;
   hairLoss: string;
@@ -30,6 +29,7 @@ type FormCheckbox = {
   important: string[];
   styleConcept: string[];
   importantHair: string[];
+  interestService: string[];
 };
 
 export default function EditCustomerModal({
@@ -61,7 +61,7 @@ export default function EditCustomerModal({
     hairDye: "",
     hairClinic: "",
     hairStyle: "",
-    interestService: "",
+    // interestService: "",
     scalpType: "",
     dandruff: "",
     hairLoss: "",
@@ -74,6 +74,7 @@ export default function EditCustomerModal({
     important: [],
     styleConcept: [],
     importantHair: [],
+    interestService: [],
   });
 
   const customerInfo = api.customer.getCustomerInfo.useQuery(
@@ -96,7 +97,6 @@ export default function EditCustomerModal({
             hairDye: data.hairDye,
             hairClinic: data.hairClinic,
             hairStyle: data.hairStyle,
-            interestService: data.interestService,
             scalpType: data.scalpType,
             dandruff: data.dandruff,
             hairLoss: data.hairLoss,
@@ -108,6 +108,7 @@ export default function EditCustomerModal({
             important: data.important,
             styleConcept: data.styleConcept,
             importantHair: data.importantHair,
+            interestService: data.interestService,
           });
         }
       },
@@ -128,7 +129,7 @@ export default function EditCustomerModal({
       hairDye: form.hairDye,
       hairClinic: form.hairClinic,
       hairStyle: form.hairStyle,
-      interestService: form.interestService,
+      interestService: formCheckbox.interestService,
       scalpType: form.scalpType,
       dandruff: form.dandruff,
       hairLoss: form.hairLoss,

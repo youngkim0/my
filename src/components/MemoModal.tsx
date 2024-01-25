@@ -161,7 +161,15 @@ export default function MemoModal({
                     {customerInfo.hairClinic}
                   </div>
                   <div className="mt-3">
-                    관심 있는 시술: {customerInfo.interestService}
+                    관심 있는 시술: 관심 있는 시술:{" "}
+                    {customerInfo.interestService.map((item, index) => (
+                      <span className="mr-2">
+                        {item}
+                        {index !== customerInfo.interestService.length - 1
+                          ? ","
+                          : ""}
+                      </span>
+                    ))}
                   </div>
                   <div className="mt-3">
                     <p>헤어스타일에서 중요하게 생각하는 부분:</p>

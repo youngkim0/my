@@ -74,7 +74,7 @@ export const customerRouter = createTRPCRouter({
         hairDye: z.string(),
         hairClinic: z.string(),
         hairStyle: z.string(),
-        interestService: z.string(),
+        interestService: z.string().array(),
         scalpType: z.string(),
         dandruff: z.string(),
         hairLoss: z.string(),
@@ -141,7 +141,7 @@ export const customerRouter = createTRPCRouter({
         hairDye: z.string(),
         hairClinic: z.string(),
         hairStyle: z.string(),
-        interestService: z.string(),
+        interestService: z.string().array(),
         scalpType: z.string(),
         dandruff: z.string(),
         hairLoss: z.string(),
@@ -223,6 +223,7 @@ export const customerRouter = createTRPCRouter({
           id: input.id,
         },
       });
+
       return user;
     }),
   addCustomerMemo: publicProcedure
