@@ -24,10 +24,9 @@ const SearchCard = ({
       {open && <CustomerModal open={open} setOpen={setOpen} id={id} />}
       <div
         className={`w-full cursor-pointer rounded-lg bg-white px-4 py-3 text-xs text-black`}
-        onClick={() => setOpen(true)}
       >
         <div className="flex justify-between">
-          <div className="flex space-x-2">
+          <div className="flex space-x-2" onClick={() => setOpen(true)}>
             <span>{name}</span>
             <span>|</span>
             <span>{gender}</span>

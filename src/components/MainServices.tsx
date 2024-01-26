@@ -10,6 +10,14 @@ const MainServices = ({
   services: Service[];
   owner: boolean;
 }) => {
+  if (services.length === 0)
+    return (
+      <div className="flex h-[96px] w-[298px] cursor-pointer flex-row rounded-xl border border-solid border-gray-100 bg-white">
+        <div className="my-2 line-clamp-4 h-[70px] flex-1 px-2 leading-6 text-black">
+          <div className="py-2 text-xs">아직 등록된 서비스가 없습니다.</div>
+        </div>
+      </div>
+    );
   return (
     <Carousel
       additionalTransfrom={0}
