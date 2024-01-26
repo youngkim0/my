@@ -36,7 +36,7 @@ const SearchCard = ({
             <span>{digit.slice(digit.length - 4)}</span>
           </div>
           <div className="flex flex-row items-center space-x-3">
-            <a href={`sms+${digit}?&body=안녕하세요`}>
+            <a href={`sms:${digit}`}>
               <Image src="/images/i-chat.png" alt="" width={20} height={20} />
             </a>
             <span>|</span>
