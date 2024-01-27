@@ -210,7 +210,10 @@ const MyPage = () => {
                 </div>
                 <div className="flex flex-col space-y-2">
                   <p className="text-xs font-semibold text-black">
-                    디자이너/직급
+                    디자이너명/직급{" "}
+                    <span className="ml-5 font-normal text-gray-600">
+                      예) 김이쁜 대표원장
+                    </span>
                   </p>
                   <input
                     className="w-full rounded-md border border-[#A3A3A3] px-2 py-1 text-xs"

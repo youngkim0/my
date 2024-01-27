@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 
 
+
 type Form = {
   name: string;
   gender: string;
@@ -51,6 +52,8 @@ export default function NewCustomerModal({
 
   const [etc, setEtc] = useState("");
   const [recommend, setRecommend] = useState("");
+
+  const [oncloseFake, setOnCloseFake] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState<Form>({
@@ -112,7 +115,7 @@ export default function NewCustomerModal({
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-[2000]" onClose={setOpen}>
+      <Dialog as="div" className="relative z-[2000]" onClose={setOnCloseFake}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
