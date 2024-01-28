@@ -618,9 +618,10 @@ const CheckGroup = ({
                       setForm(newForm);
                       return;
                     }
-                    newForm[section as keyof FormCheckbox].filter(
-                      (v) => v !== item,
-                    );
+                    newForm[section as keyof FormCheckbox] = newForm[
+                      section as keyof FormCheckbox
+                    ].filter((v) => v !== item);
+                    setForm(newForm);
                   }}
                 />
                 <label
@@ -649,9 +650,10 @@ const CheckGroup = ({
                         setForm(newForm);
                         return;
                       }
-                      newForm[section as keyof FormCheckbox].filter(
-                        (v) => v !== item,
-                      );
+                      newForm[section as keyof FormCheckbox] = newForm[
+                        section as keyof FormCheckbox
+                      ].filter((v) => v !== item);
+                      setForm(newForm);
                     }}
                   />
                   <label
@@ -681,9 +683,10 @@ const CheckGroup = ({
                         setForm(newForm);
                         return;
                       }
-                      newForm[section as keyof FormCheckbox].filter(
-                        (v) => v !== item,
-                      );
+                      newForm[section as keyof FormCheckbox] = newForm[
+                        section as keyof FormCheckbox
+                      ].filter((v) => v !== item);
+                      setForm(newForm);
                     }}
                   />
                   <label
@@ -713,9 +716,10 @@ const CheckGroup = ({
                         setForm(newForm);
                         return;
                       }
-                      newForm[section as keyof FormCheckbox].filter(
-                        (v) => v !== item,
-                      );
+                      newForm[section as keyof FormCheckbox] = newForm[
+                        section as keyof FormCheckbox
+                      ].filter((v) => v !== item);
+                      setForm(newForm);
                     }}
                   />
                   <label
@@ -745,9 +749,10 @@ const CheckGroup = ({
                         setForm(newForm);
                         return;
                       }
-                      newForm[section as keyof FormCheckbox].filter(
-                        (v) => v !== item,
-                      );
+                      newForm[section as keyof FormCheckbox] = newForm[
+                        section as keyof FormCheckbox
+                      ].filter((v) => v !== item);
+                      setForm(newForm);
                     }}
                   />
                   <label
