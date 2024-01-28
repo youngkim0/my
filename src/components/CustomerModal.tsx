@@ -29,6 +29,7 @@ export default function MemoModal({
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const util = api.useUtils();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [onCloseFake, setOnCloseFake] = useState<boolean>(false);
 
   const customerInfo = api.customer.getCustomerInfo.useQuery(
     {
@@ -67,7 +68,7 @@ export default function MemoModal({
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-[2000]" onClose={setOpen}>
+      <Dialog as="div" className="relative z-[2000]" onClose={setOnCloseFake}>
         {editOpen && (
           <EditCustomerModal
             setOpen={setEditOpen}
