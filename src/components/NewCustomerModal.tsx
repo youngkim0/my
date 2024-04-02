@@ -5,8 +5,6 @@ import Image from "next/image";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 
-
-
 type Form = {
   name: string;
   gender: string;
