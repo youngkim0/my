@@ -22,7 +22,12 @@ const Footer = () => {
         />
       )}
       <div>
-        <Image src="/images/my-logo.png" alt="logo" width={42} height={33} />
+        <Image
+          src="/images/my_mem_logo.png"
+          alt="logo"
+          width={42}
+          height={33}
+        />
       </div>
       <div className="flex flex-col space-y-1 text-xs">
         <div>
